@@ -18,7 +18,7 @@ public class ServiceArgumentFilterParameter : ArgumentativeFilterParameterProvid
         _required = required;
     }
 
-    public string FilterCode => $"{_argumentType} {_argumentName}{NameSuffix} = {VariableNames.InvocationFilterContext}.HttpContext.RequestServices.{GetServiceProviderMethodName()}<{_argumentType}>();";
+    public string FilterCode => $"var {_argumentName}{NameSuffix} = {VariableNames.InvocationFilterContext}.HttpContext.RequestServices.{GetServiceProviderMethodName()}<{_argumentType}>();";
     public override string ParameterCode => $"{_argumentName}{NameSuffix}";
 
     private string GetServiceProviderMethodName() => _required 

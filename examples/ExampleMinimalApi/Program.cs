@@ -1,5 +1,7 @@
 using ExampleMinimalApi;
 
+using Microsoft.AspNetCore.Mvc;
+
 #pragma warning disable CA1852
 
 var builder = WebApplication.CreateBuilder(args);

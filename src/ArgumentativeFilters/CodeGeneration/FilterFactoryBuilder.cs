@@ -1,11 +1,10 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
 
-using ArgumentativeFilters.CodeGeneration;
 using ArgumentativeFilters.CodeGeneration.Parameters;
 using ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
 
-namespace ArgumentativeFilters;
+namespace ArgumentativeFilters.CodeGeneration;
 
 public class FilterFactoryBuilder
 {
@@ -17,10 +16,10 @@ public class FilterFactoryBuilder
     
     public FilterFactoryBuilder AddFactoryCode(IImmutableList<IFactoryCodeProvider> factoryCodeProviders)
     {
-        foreach (var factoryCodeProvider in factoryCodeProviders)
+        foreach (var factoryCode in factoryCodeProviders.Select(x => x.FactoryCode).Distinct())
         {
             _builder.Append(FactoryIndentation);
-            _builder.AppendLine(factoryCodeProvider.FactoryCode);
+            _builder.AppendLine(factoryCode);
         }
 
         return this;
@@ -31,13 +30,15 @@ public class FilterFactoryBuilder
         _builder.Append(FactoryIndentation);
         _builder.Append($"if (");
         
-        for(var i = 0; i < filterConditionProviders.Count; i++)
+        var distinctConditions = filterConditionProviders.Select(s => s.FilterConditionCode).Distinct().ToArray();
+        
+        for(var i = 0; i < distinctConditions.Length; i++)
         {
             if (i > 0)
             {
                 _builder.Append(" && ");
             }
-            _builder.Append(filterConditionProviders[i].FilterConditionCode);
+            _builder.Append(distinctConditions[i]);
         }
         
         _builder.AppendLine($")");

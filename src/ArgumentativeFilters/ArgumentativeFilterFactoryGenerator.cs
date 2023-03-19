@@ -19,11 +19,11 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
     {
         context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
             "ArgumentativeFilterAttribute.g.cs", 
-            SourceText.From(Templates.ArgumentativeFilterAttribute, Encoding.UTF8)));
+            SourceText.From(TypeTemplates.ArgumentativeFilterAttribute, Encoding.UTF8)));
         
         context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
             "IndexOfArgumentAttribute.g.cs", 
-            SourceText.From(Templates.IndexOfArgumentAttribute, Encoding.UTF8)));
+            SourceText.From(TypeTemplates.IndexOfArgumentAttribute, Encoding.UTF8)));
 
         IncrementalValuesProvider<MethodDeclarationSyntax?> methodDeclarationSyntax = context.SyntaxProvider
             .CreateSyntaxProvider(
@@ -110,71 +110,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
             .EndFilterClosure()
             .EndFilterCondition();
         
-        var sb = new StringBuilder();
-        
-        const string factoryIndentation = "            "; 
-        const string filterIndentation = "                "; 
-        foreach (var factoryCode in parameters.OfType<IFactoryCodeProvider>())
-        {
-            sb.Append(factoryIndentation);
-            sb.AppendLine(factoryCode.FactoryCode);
-        }
-        sb.Append(factoryIndentation);
-        sb.AppendLine($"return {VariableNames.InvocationFilterContext} => {{");
-        foreach (var filterCode in parameters.OfType<IFilterCodeProvider>())
-        {
-            sb.Append(filterIndentation);
-            sb.AppendLine(filterCode.FilterCode);
-        }
-        sb.Append(filterIndentation);
-        sb.Append($"return {filter.Identifier.Text}(");
-        for (int i = 0; i < parameters.Length; i++)
-        {
-            sb.Append(parameters[i].ParameterCode);
-
-            if (i != parameters.Length - 1)
-            {
-                sb.Append(", ");
-            }
-        }
-        sb.AppendLine(");");
-        sb.Append(factoryIndentation);
-        sb.AppendLine("};");
-        var codeText = Templates.ArgumentativeFilterTemplate(containingNamespace, containingClass, builder.Build());
+        var codeText = TypeTemplates.ArgumentativeFilterTemplate(containingNamespace, containingClass, builder.Build());
         context.AddSource($"ArgumentativeFilterFactory.{containingClass}.g.cs", SourceText.From(codeText, Encoding.UTF8));
     }
-    
-    static void GetMetadataForType(Compilation compilation, MethodDeclarationSyntax methodDeclarationSyntax)
-    {
-        var semanticModel = compilation.GetSemanticModel(methodDeclarationSyntax.SyntaxTree);
-        var parameters = methodDeclarationSyntax.ParameterList.Parameters.ToArray();
-
-        foreach (var parameter in parameters)
-        {
-            foreach(var attributeList in parameter.AttributeLists)
-            {
-                foreach(var attribute in attributeList.Attributes)
-                {
-                    if (ModelExtensions.GetSymbolInfo(semanticModel, attribute).Symbol is not IMethodSymbol attributeSymbol)
-                    {
-                        continue;
-                    }
-                
-                    INamedTypeSymbol attributeContainingTypeSymbol = attributeSymbol.ContainingType;
-                    string fullName = attributeContainingTypeSymbol.ToDisplayString();
-
-                    if (fullName == "ArgumentativeFilters.IndexOfAttribute")
-                    {
-                        
-                    }
-                
-                }
-            }
-        }
-    }
-
-    private static IEnumerable<MethodDeclarationSyntax> GetArgumentativeFilters(Compilation compilation) =>
-        compilation.SyntaxTrees.SelectMany(s => s.GetRoot().DescendantNodes().Where(w =>
-            w is MethodDeclarationSyntax mds && mds.AttributeLists.Any(a =>
-                a.Attributes.Any(at => at.Name.ToString() == "ArgumentativeFilterAttribute"))).Cast<MethodDeclarationSyntax>());
 }

@@ -3,17 +3,13 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using CSharpExtensions = Microsoft.CodeAnalysis.CSharp.CSharpExtensions;
-
 namespace ArgumentativeFilters.Parsing;
 
 public static class ParameterFactory
 {
 
     private const string AspNetCoreEndpointFilterDelegateName = "Microsoft.AspNetCore.Http.EndpointFilterDelegate";
-    private const string EndpointFilterDelegateName = "EndpointFilterDelegate";
     private const string AspNetCoreEndpointFilterInvocationContextName = "Microsoft.AspNetCore.Http.EndpointFilterInvocationContext";
-    private const string EndpointFilterInvocationContextName = "EndpointFilterInvocationContext";
     public static ArgumentativeFilterParameterProvider GetParameterCodeProvider(ParameterSyntax parameterSyntax, Compilation compilation)
     {
         var semanticModel = compilation.GetSemanticModel(parameterSyntax.SyntaxTree);
@@ -40,32 +36,19 @@ public static class ParameterFactory
             {
                 return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.First().Value as string ?? "failed");
             }
+            
+            if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
+            {
+                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToUnannotatedString(), parameterSymbol.IsNullable());
+            }
         }
 
-        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToString());
-        
-        // foreach (var attributeList in parameterSyntax.AttributeLists)
-        // {
-        //     foreach (var attribute in attributeList.Attributes)
-        //     {
-        //         var attributeSymbol = semanticModel.GetSymbolInfo(attribute).Symbol as IMethodSymbol;
-        //
-        //         if (attributeSymbol is null)
-        //         {
-        //             continue;
-        //         }
-        //         
-        //         INamedTypeSymbol attributeContainingTypeSymbol = attributeSymbol.ContainingType;
-        //         string fullName = attributeContainingTypeSymbol.ToDisplayString();
-        //
-        //         if (fullName == "ArgumentativeFilters.IndexOfAttribute")
-        //         {
-        //             return new IndexArgumentFilterParameter("country");
-        //         }
-        //     }
-        // }
-        //
-        //
-        // return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToString());
+        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToUnannotatedString());
     }
+    
+    private static bool IsNullable(this IParameterSymbol parameterSymbol) =>
+        parameterSymbol.NullableAnnotation != NullableAnnotation.None && parameterSymbol.NullableAnnotation != NullableAnnotation.Annotated;
+    
+    private static string ToUnannotatedString(this TypeSyntax typeSyntax) =>
+        typeSyntax.IsKind(SyntaxKind.NullableType) ? typeSyntax.ToString().Replace("?", string.Empty) : typeSyntax.ToString();
 }
