@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 		Directory.Build.targets = Directory.Build.targets
 		README.md = README.md
+		build.ps1 = build.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B908D152-98BD-4814-B6F1-AFF36DBD3D62}"
@@ -24,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{313FDE40
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentativeFilters.Tests", "tests\ArgumentativeFilters.Tests\ArgumentativeFilters.Tests.csproj", "{2544E2F1-B925-452C-818A-25088AE5B578}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{634FBCAE-C3C0-4C55-8CCA-6BCCB960CDD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AE02EA4A-D6B4-46E6-A12D-9A1857451AA7} = {B908D152-98BD-4814-B6F1-AFF36DBD3D62}
 		{2544E2F1-B925-452C-818A-25088AE5B578} = {313FDE40-F228-4BDA-A8FA-E27780961940}
+		{634FBCAE-C3C0-4C55-8CCA-6BCCB960CDD6} = {D1D6CAE9-D15C-4172-8658-55B23B1CD63C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AE02EA4A-D6B4-46E6-A12D-9A1857451AA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

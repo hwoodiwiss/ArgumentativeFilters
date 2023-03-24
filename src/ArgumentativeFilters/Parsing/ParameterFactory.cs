@@ -39,15 +39,17 @@ public static class ParameterFactory
             
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
             {
-                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToUnannotatedString(), parameterSymbol.IsNullable());
+                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToUnannotatedString(), parameterSymbol.IsRequired());
             }
         }
 
         return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToUnannotatedString());
     }
     
-    private static bool IsNullable(this IParameterSymbol parameterSymbol) =>
-        parameterSymbol.NullableAnnotation != NullableAnnotation.None && parameterSymbol.NullableAnnotation != NullableAnnotation.Annotated;
+    private static bool IsRequired(this IParameterSymbol parameterSymbol) =>
+        parameterSymbol.NullableAnnotation != NullableAnnotation.None 
+            ? parameterSymbol.NullableAnnotation == NullableAnnotation.Annotated 
+            : parameterSymbol.IsOptional;
     
     private static string ToUnannotatedString(this TypeSyntax typeSyntax) =>
         typeSyntax.IsKind(SyntaxKind.NullableType) ? typeSyntax.ToString().Replace("?", string.Empty) : typeSyntax.ToString();
