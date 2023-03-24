@@ -29,7 +29,7 @@ public static partial class ExampleFilter
 
 ```
 
-**Minimal API Setup**
+**Minimal API Route Configuration**
 
 ```csharp
 app.MapGet("/my/route/{parameter}", (string parameter) => parameter)
