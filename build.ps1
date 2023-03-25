@@ -9,7 +9,8 @@ param (
 
 
 $testProjectPaths = @(
-    "tests/ArgumentativeFilters.Tests/ArgumentativeFilters.Tests.csproj"
+    "tests/ArgumentativeFilters.Tests/ArgumentativeFilters.Tests.csproj",
+    "tests/ArgumentativeFilters.Integration.Tests/ArgumentativeFilters.Integration.Tests.csproj"
 )
 
 foreach ($testProjectPath in $testProjectPaths) {

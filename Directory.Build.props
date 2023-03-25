@@ -21,7 +21,7 @@
     <VersionSuffix>preview2</VersionSuffix>
     <VersionSuffix Condition=" '$(GITHUB_BUILD)' != '' ">preview$(GITHIB_BUILD)</VersionSuffix>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" '$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
