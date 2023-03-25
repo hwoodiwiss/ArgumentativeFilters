@@ -1,8 +1,12 @@
 <Project>
   <PropertyGroup>
     <AnalysisMode>All</AnalysisMode>
+    <Authors>Hugo Woodiwiss</Authors>
+    <Copyright>Copyright (c) Hugo Woodiwiss 2023-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
     <DefaultClassLibFramework>netstandard2.0</DefaultClassLibFramework>
     <DefaultWebApiFramework>net7.0</DefaultWebApiFramework>
+    <Deterministic>true</Deterministic>
+    <Description>A source generator to make convenient Minimal API filter factories</Description>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
@@ -10,6 +14,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/hwoodiwiss/ArgumentativeFilters</PackageProjectUrl>
     <PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <VersionSuffix>preview</VersionSuffix>
+    <VersionSuffix Condition=" '$(GITHUB_BUILD)' != '' ">preview$(GITHIB_BUILD)</VersionSuffix>
   </PropertyGroup>
 </Project>

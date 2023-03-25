@@ -7,6 +7,15 @@ param (
     [string] $OutputPath = (Join-Path $PSScriptRoot "artifacts")
 )
 
-$projectPath = "$PSScriptRoot/src/ArgumentativeFilters/ArgumentativeFilters.csproj"
 
-dotnet pack $projectPath -c $Configuration -o (Join-Path $OutputPath "packages")
+$testProjectPaths = @(
+    "tests/ArgumentativeFilters.Tests/ArgumentativeFilters.Tests.csproj"
+)
+
+foreach ($testProjectPath in $testProjectPaths) {
+    dotnet test $testProjectPath --configuration $Configuration
+}
+
+$projectPath = "src/ArgumentativeFilters/ArgumentativeFilters.csproj"
+
+dotnet pack $projectPath --configuration $Configuration --output (Join-Path $OutputPath "packages") --version-suffix "preview"
