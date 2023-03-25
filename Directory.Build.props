@@ -14,10 +14,14 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/hwoodiwiss/ArgumentativeFilters</PackageProjectUrl>
     <PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <VersionPrefix>0.0.1</VersionPrefix>
-    <VersionSuffix>preview</VersionSuffix>
+    <VersionSuffix>preview2</VersionSuffix>
     <VersionSuffix Condition=" '$(GITHUB_BUILD)' != '' ">preview$(GITHIB_BUILD)</VersionSuffix>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 </Project>

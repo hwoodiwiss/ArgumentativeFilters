@@ -18,4 +18,4 @@ foreach ($testProjectPath in $testProjectPaths) {
 
 $projectPath = "src/ArgumentativeFilters/ArgumentativeFilters.csproj"
 
-dotnet pack $projectPath --configuration $Configuration --output (Join-Path $OutputPath "packages") --version-suffix "preview"
+dotnet pack $projectPath --configuration $Configuration --output (Join-Path $OutputPath "packages")

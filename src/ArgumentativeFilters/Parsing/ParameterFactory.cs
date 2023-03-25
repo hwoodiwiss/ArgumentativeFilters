@@ -49,7 +49,7 @@ public static class ParameterFactory
     private static bool IsRequired(this IParameterSymbol parameterSymbol) =>
         parameterSymbol.NullableAnnotation != NullableAnnotation.None 
             ? parameterSymbol.NullableAnnotation == NullableAnnotation.Annotated 
-            : parameterSymbol.IsOptional;
+            : !parameterSymbol.IsOptional;
     
     private static string ToUnannotatedString(this TypeSyntax typeSyntax) =>
         typeSyntax.IsKind(SyntaxKind.NullableType) ? typeSyntax.ToString().Replace("?", string.Empty) : typeSyntax.ToString();
