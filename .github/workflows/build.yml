@@ -40,7 +40,3 @@ jobs:
         with:
           name: packages
           path: ./artifacts/packages
-
-      - name: Publish to Github Nuget Repository
-        run: dotnet nuget push "./artifacts/packages/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/hwoodiwiss/index.json
-        if: ${{ success() && github.event.repository.fork == false }}
