@@ -15,6 +15,10 @@ $testProjectPaths = @(
 
 foreach ($testProjectPath in $testProjectPaths) {
     dotnet test $testProjectPath --configuration $Configuration
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "dotnet test failed with exit code $LASTEXITCODE"
+    }
 }
 
 $projectPath = "src/ArgumentativeFilters/ArgumentativeFilters.csproj"
