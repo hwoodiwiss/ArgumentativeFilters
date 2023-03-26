@@ -7,6 +7,20 @@ param (
     [string] $OutputPath = (Join-Path $PSScriptRoot "artifacts")
 )
 
-$projectPath = "$PSScriptRoot/src/ArgumentativeFilters/ArgumentativeFilters.csproj"
 
-dotnet pack $projectPath -c $Configuration -o (Join-Path $OutputPath "packages")
+$testProjectPaths = @(
+    "tests/ArgumentativeFilters.Tests/ArgumentativeFilters.Tests.csproj",
+    "tests/ArgumentativeFilters.Integration.Tests/ArgumentativeFilters.Integration.Tests.csproj"
+)
+
+foreach ($testProjectPath in $testProjectPaths) {
+    dotnet test $testProjectPath --configuration $Configuration
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "dotnet test failed with exit code $LASTEXITCODE"
+    }
+}
+
+$projectPath = "src/ArgumentativeFilters/ArgumentativeFilters.csproj"
+
+dotnet pack $projectPath --configuration $Configuration --output (Join-Path $OutputPath "packages")
