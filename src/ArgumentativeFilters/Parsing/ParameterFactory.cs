@@ -1,6 +1,5 @@
 ﻿using ArgumentativeFilters.CodeGeneration.Parameters;
 
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ArgumentativeFilters.Parsing;
@@ -14,7 +13,7 @@ public static class ParameterFactory
     {
         var semanticModel = compilation.GetSemanticModel(parameterSyntax.SyntaxTree);
 
-        if (ModelExtensions.GetDeclaredSymbol(semanticModel, parameterSyntax) is not IParameterSymbol parameterSymbol)
+        if (semanticModel.GetDeclaredSymbol(parameterSyntax) is not IParameterSymbol parameterSymbol)
         {
             throw new ApplicationException("failed");
         }
@@ -34,7 +33,7 @@ public static class ParameterFactory
         
             if (fullName == "ArgumentativeFilters.IndexOfAttribute")
             {
-                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.First().Value as string ?? "failed");
+                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.");
             }
             
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
@@ -48,7 +47,7 @@ public static class ParameterFactory
     
     private static bool IsRequired(this IParameterSymbol parameterSymbol) =>
         parameterSymbol.NullableAnnotation != NullableAnnotation.None 
-            ? parameterSymbol.NullableAnnotation == NullableAnnotation.Annotated 
+            ? parameterSymbol.NullableAnnotation == NullableAnnotation.NotAnnotated 
             : !parameterSymbol.IsOptional;
     
     private static string ToUnannotatedString(this ITypeSymbol typeSymbol) =>

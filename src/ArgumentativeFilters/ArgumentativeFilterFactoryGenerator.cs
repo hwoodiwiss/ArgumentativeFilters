@@ -2,7 +2,6 @@
 using System.Text;
 
 using ArgumentativeFilters.CodeGeneration;
-using ArgumentativeFilters.CodeGeneration.Parameters;
 using ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
 using ArgumentativeFilters.Parsing;
 
@@ -84,7 +83,15 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
     
     private static void GenerateFilterFactory(Compilation compilation, MethodDeclarationSyntax filter, SourceProductionContext context)
     {
-        var containingNamespace = filter.GetContainingNamespace();
+        var semanticModel = compilation.GetSemanticModel(filter.SyntaxTree);
+        var filterMethodSymbol = semanticModel.GetDeclaredSymbol(filter);
+        
+        if (filterMethodSymbol is null)
+        {
+            return;
+        }
+        
+        var containingNamespace = filterMethodSymbol.ContainingNamespace.ToDisplayString();
         
         var containingClassSyntax = filter.Parent switch
         {
@@ -96,8 +103,15 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
         {
             return;
         }
-        
-        var containingClass = containingClassSyntax.Identifier.Text;
+
+        var containingClass = filterMethodSymbol.ContainingType!;
+        var containingClassName = containingClass.Name;
+        var containingClassAccessibility = containingClass.DeclaredAccessibility switch
+        {
+            Accessibility.Public => "public",
+            Accessibility.Internal => "internal",
+            _ => throw new InvalidOperationException("Filter must be declared in a public or internal class.")
+        };
         var parameters = filter.ParameterList.Parameters.Select(s => ParameterFactory.GetParameterCodeProvider(s, compilation)).ToArray();
         FilterFactoryBuilder builder = new ();
         
@@ -110,7 +124,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
             .EndFilterClosure()
             .EndFilterCondition();
         
-        var codeText = TypeTemplates.ArgumentativeFilterTemplate(containingNamespace, containingClass, builder.Build());
+        var codeText = TypeTemplates.ArgumentativeFilterTemplate(containingNamespace, containingClassName, containingClassAccessibility, builder.Build());
         context.AddSource($"ArgumentativeFilterFactory.{containingClass}.g.cs", SourceText.From(codeText, Encoding.UTF8));
     }
 }
