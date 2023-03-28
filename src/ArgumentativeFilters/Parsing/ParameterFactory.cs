@@ -47,7 +47,7 @@ public static class ParameterFactory
     
     private static bool IsRequired(this IParameterSymbol parameterSymbol) =>
         parameterSymbol.NullableAnnotation != NullableAnnotation.None 
-            ? parameterSymbol.NullableAnnotation == NullableAnnotation.Annotated 
+            ? parameterSymbol.NullableAnnotation == NullableAnnotation.NotAnnotated 
             : !parameterSymbol.IsOptional;
     
     private static string ToUnannotatedString(this ITypeSymbol typeSymbol) =>
