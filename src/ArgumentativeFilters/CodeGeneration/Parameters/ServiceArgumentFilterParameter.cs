@@ -10,7 +10,7 @@ public class ServiceArgumentFilterParameter : ArgumentativeFilterParameterProvid
     private const string NameSuffix = "Service";
     private const string GetRequiredServiceMethodName = "GetRequiredService";
     private const string GetServiceMethodName = "GetService";
-    
+
     public ServiceArgumentFilterParameter(string argumentName, string argumentType, bool required)
     {
         _argumentName = argumentName;
@@ -18,10 +18,11 @@ public class ServiceArgumentFilterParameter : ArgumentativeFilterParameterProvid
         _required = required;
     }
 
-    public string FilterCode => $"var {_argumentName}{NameSuffix} = {VariableNames.InvocationFilterContext}.HttpContext.RequestServices.{GetServiceProviderMethodName()}<{_argumentType}>();";
+    public string FilterCode => $"{_argumentType} {_argumentName}{NameSuffix} = {VariableNames.InvocationFilterContext}.HttpContext.RequestServices.{GetServiceProviderMethodName()}<{_argumentType}>();";
+
     public override string ParameterCode => $"{_argumentName}{NameSuffix}";
 
-    private string GetServiceProviderMethodName() => _required 
-        ? GetRequiredServiceMethodName 
+    private string GetServiceProviderMethodName() => _required
+        ? GetRequiredServiceMethodName
         : GetServiceMethodName;
 }

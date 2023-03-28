@@ -1,5 +1,7 @@
 # Argumentative Filters
 
+> :warning: This is an early preview package, and is not intended for production use yet. It is likely broken in a number of ways.
+
 In classic ASP.Net APIs, `IActionFilter.ActionExecutingContext` provides access to `IDictionary<string, object?> ActionArguments` which is a name-value collection of the parameters that will be provided to the Controller action that will be run.
 
 There isn't a direct equivalent to that in AspNetCore Minimal APIs, instead, an `EndpointFilterInvocationContext` is passed, which instead has in `IList<object?> Arguments` for accessing the Minimal API endpoint delegate argument values.
