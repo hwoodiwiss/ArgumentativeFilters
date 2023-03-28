@@ -18,8 +18,7 @@
     <RepositoryType>git</RepositoryType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <VersionPrefix>0.0.1</VersionPrefix>
-    <VersionSuffix>preview2</VersionSuffix>
-    <VersionSuffix Condition=" '$(GITHUB_BUILD)' != '' ">preview$(GITHIB_BUILD)</VersionSuffix>
+    <VersionSuffix>preview3</VersionSuffix>
   </PropertyGroup>
   <ItemGroup Condition=" '$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath="\"/>

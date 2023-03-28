@@ -39,11 +39,11 @@ public static class ParameterFactory
             
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
             {
-                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToUnannotatedString(), parameterSymbol.IsRequired());
+                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!.ToUnannotatedString(), parameterSymbol.IsRequired());
             }
         }
 
-        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSyntax.Type!.ToUnannotatedString());
+        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!.ToUnannotatedString());
     }
     
     private static bool IsRequired(this IParameterSymbol parameterSymbol) =>
@@ -51,6 +51,6 @@ public static class ParameterFactory
             ? parameterSymbol.NullableAnnotation == NullableAnnotation.Annotated 
             : !parameterSymbol.IsOptional;
     
-    private static string ToUnannotatedString(this TypeSyntax typeSyntax) =>
-        typeSyntax.IsKind(SyntaxKind.NullableType) ? typeSyntax.ToString().Replace("?", string.Empty) : typeSyntax.ToString();
+    private static string ToUnannotatedString(this ITypeSymbol typeSymbol) =>
+        typeSymbol.NullableAnnotation == NullableAnnotation.None ? typeSymbol.ToDisplayString() : typeSymbol.ToDisplayString().Replace("?", string.Empty);
 }
