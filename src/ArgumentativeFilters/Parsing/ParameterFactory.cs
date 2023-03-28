@@ -13,7 +13,7 @@ public static class ParameterFactory
     {
         var semanticModel = compilation.GetSemanticModel(parameterSyntax.SyntaxTree);
 
-        if (ModelExtensions.GetDeclaredSymbol(semanticModel, parameterSyntax) is not IParameterSymbol parameterSymbol)
+        if (semanticModel.GetDeclaredSymbol(parameterSyntax) is not IParameterSymbol parameterSymbol)
         {
             throw new ApplicationException("failed");
         }
@@ -33,7 +33,7 @@ public static class ParameterFactory
         
             if (fullName == "ArgumentativeFilters.IndexOfAttribute")
             {
-                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.First().Value as string ?? "failed");
+                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.");
             }
             
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")

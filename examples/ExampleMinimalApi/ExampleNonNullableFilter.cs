@@ -5,10 +5,10 @@ namespace ExampleMinimalApi;
 
 #nullable disable
 
-public static partial class ExampleNonNullableFilter
+internal static partial class ExampleNonNullableFilter
 {
     [ArgumentativeFilter]
-    public static ValueTask<object> NormalizeRouteStringsFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, string country, [IndexOf(nameof(country))] int countryIndex, [FromServices] IConfiguration configuration)
+    private static ValueTask<object> NormalizeRouteStringsFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, string country, [IndexOf(nameof(country))] int countryIndex, [FromServices] IConfiguration configuration)
     {
         context.Arguments[countryIndex] = country.ToUpperInvariant();
         return next(context);
