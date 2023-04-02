@@ -38,18 +38,27 @@ public static class ParameterFactory
             
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
             {
-                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!.ToUnannotatedString(), parameterSymbol.IsRequired());
+                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, GetFullyQualifiedTypeName(parameterSymbol.Type), parameterSymbol.IsRequired());
             }
         }
 
-        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!.ToUnannotatedString());
+        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, GetFullyQualifiedTypeName(parameterSymbol.Type));
     }
     
     private static bool IsRequired(this IParameterSymbol parameterSymbol) =>
         parameterSymbol.NullableAnnotation != NullableAnnotation.None 
             ? parameterSymbol.NullableAnnotation == NullableAnnotation.NotAnnotated 
             : !parameterSymbol.IsOptional;
-    
-    private static string ToUnannotatedString(this ITypeSymbol typeSymbol) =>
-        typeSymbol.NullableAnnotation == NullableAnnotation.None ? typeSymbol.ToDisplayString() : typeSymbol.ToDisplayString().Replace("?", string.Empty);
+
+    private static string GetFullyQualifiedTypeName(ITypeSymbol? typeSymbol)
+    {
+        if (typeSymbol is null) throw new ArgumentNullException(nameof(typeSymbol));
+        
+        string prefix = typeSymbol.SpecialType == SpecialType.None ? "global::" : string.Empty;
+        string typeName = typeSymbol.NullableAnnotation == NullableAnnotation.None
+            ? typeSymbol.ToDisplayString()
+            : typeSymbol.ToDisplayString().Replace("?", string.Empty);
+        
+        return $"{prefix}{typeName}";
+    }
 }
