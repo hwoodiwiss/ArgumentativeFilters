@@ -2,6 +2,7 @@
 using System.Text;
 
 using ArgumentativeFilters.CodeGeneration;
+using ArgumentativeFilters.CodeGeneration.Extensions;
 using ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
 using ArgumentativeFilters.Parsing;
 
@@ -105,26 +106,44 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
         }
 
         var containingClass = filterMethodSymbol.ContainingType!;
-        var containingClassName = containingClass.Name;
-        var containingClassAccessibility = containingClass.DeclaredAccessibility switch
-        {
-            Accessibility.Public => "public",
-            Accessibility.Internal => "internal",
-            _ => throw new InvalidOperationException("Filter must be declared in a public or internal class.")
-        };
         var parameters = filter.ParameterList.Parameters.Select(s => ParameterFactory.GetParameterCodeProvider(s, compilation)).ToArray();
-        FilterFactoryBuilder builder = new ();
+        var containingTypes = GetContainingTypes(filterMethodSymbol);
+
+        StringBuilder sb = new();
         
+        FilterFactoryContainingHierarchyBuilder hierarchyBuilder = new (sb);
+
+        hierarchyBuilder.AddContainingHierarchy(containingTypes);
+
+        FilterFactoryBuilder builder = new (sb, hierarchyBuilder.CurrentIndentationLevel);
         builder
+            .AddFilterFactorySignature(containingClass.GetAccessibilityString())
             .AddFactoryCode(parameters.OfType<IFactoryCodeProvider>().ToImmutableArray())
             .AddFilterConditionCode(parameters.OfType<IFilterConditionProvider>().ToImmutableArray())
             .StartFilterClosure()
             .AddFilterCode(parameters.OfType<IFilterCodeProvider>().ToImmutableArray())
             .AddFilterCall(filter.Identifier.Text, parameters.ToImmutableArray())
             .EndFilterClosure()
-            .EndFilterCondition();
+            .EndFilterCondition()
+            .EndFilterFactory()
+            .AddGetArgumentIndexMethod();
+
+        hierarchyBuilder.CloseContainingClasses();
         
-        var codeText = TypeTemplates.ArgumentativeFilterTemplate(containingNamespace, containingClassName, containingClassAccessibility, builder.Build());
+        var codeText = TypeTemplates.ArgumentativeFilterTemplate(containingNamespace, sb.ToString());
         context.AddSource($"ArgumentativeFilterFactory.{containingClass}.g.cs", SourceText.From(codeText, Encoding.UTF8));
+    }
+    
+    private static Stack<INamedTypeSymbol> GetContainingTypes(IMethodSymbol typeSymbol)
+    {
+        var stack = new Stack<INamedTypeSymbol>();
+        var current = typeSymbol.ContainingType;
+        while (current is not null)
+        {
+            stack.Push(current);
+            current = current.ContainingType;
+        }
+
+        return stack;
     }
 }
