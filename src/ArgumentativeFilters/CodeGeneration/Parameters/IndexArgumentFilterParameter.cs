@@ -13,7 +13,7 @@ public class IndexArgumentFilterParameter : ArgumentativeFilterParameterProvider
     }
     
         
-    public string FactoryCode => $"int? {_argumentName}{IndexNameSuffix} = context.GetArgumentIndex(\"{_argumentName}\");";
+    public string FactoryCode => $"int? {_argumentName}{IndexNameSuffix} = GetArgumentIndex({VariableNames.FactoryFilterContext}, \"{_argumentName}\");";
     public string FilterConditionCode => $"{_argumentName}{IndexNameSuffix}.HasValue";
     public override string ParameterCode => $"{_argumentName}{IndexNameSuffix}.Value";
 }
