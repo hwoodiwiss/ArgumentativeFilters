@@ -37,12 +37,16 @@ public abstract class ArgumentativeFilterTests : IDisposable
             MethodInfo = endpointSignature.Method
         };
 
-        HttpContext httpContext = new DefaultHttpContext {RequestServices = _serviceScope.ServiceProvider};
-        DefaultEndpointFilterInvocationContext invocationContext = new(
+        HttpContext httpContext = new DefaultHttpContext { RequestServices = _serviceScope.ServiceProvider };
+        DefaultEndpointFilterInvocationContext invocationContext = new (
             httpContext,
             argumentValues);
 
-        _context = new() {FactoryContext = factoryContext, InvocationContext = invocationContext,};
+        _context = new()
+        {
+            FactoryContext = factoryContext,
+            InvocationContext = invocationContext,
+        };
     }
 
     protected virtual void Dispose(bool disposing)

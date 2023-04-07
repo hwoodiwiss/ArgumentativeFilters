@@ -106,7 +106,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
         }
 
         var containingClass = filterMethodSymbol.ContainingType!;
-        var parameters = filter.ParameterList.Parameters.Select(s => ParameterFactory.GetParameterCodeProvider(s, compilation)).ToArray();
+        var parameters = filter.ParameterList.Parameters.Select(s => ParameterCodeProviderFactory.GetParameterCodeProvider(s, compilation)).ToArray();
         var containingTypes = GetContainingTypes(filterMethodSymbol);
 
         StringBuilder sb = new();
@@ -128,7 +128,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
             .EndFilterFactory()
             .AddGetArgumentIndexMethod();
 
-        hierarchyBuilder.CloseContainingClasses();
+        hierarchyBuilder.CloseContainingHierarchy();
         
         var codeText = TypeTemplates.ArgumentativeFilterTemplate(containingNamespace, sb.ToString());
         context.AddSource($"ArgumentativeFilterFactory.{containingClass}.g.cs", SourceText.From(codeText, Encoding.UTF8));

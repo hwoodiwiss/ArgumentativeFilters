@@ -54,7 +54,7 @@ public class FilterFactoryContainingHierarchyBuilder
         return this;
     }
     
-    public FilterFactoryContainingHierarchyBuilder CloseContainingClasses()
+    public FilterFactoryContainingHierarchyBuilder CloseContainingHierarchy()
     {
         for(var i = 1; i < _hierarchyLevelCount + 1; i++)
         {

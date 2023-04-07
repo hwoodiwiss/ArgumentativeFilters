@@ -127,7 +127,7 @@ public class FilterFactoryBuilder
 
     public FilterFactoryBuilder EndFilterFactory()
     {
-        _builder.AppendLine($"{_filterIndentation}return {VariableNames.InvocationFilterContext} => {VariableNames.EndpointFilterDelegate}({VariableNames.InvocationFilterContext});");
+        _builder.AppendLine($"{_factoryIndentation}return {VariableNames.InvocationFilterContext} => {VariableNames.EndpointFilterDelegate}({VariableNames.InvocationFilterContext});");
         _builder.Append(_startingIndentation);
         _builder.AppendLine("}");
         _builder.AppendLine();
