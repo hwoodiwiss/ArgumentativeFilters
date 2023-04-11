@@ -32,7 +32,7 @@ public static class TestHelper
 
         driver = driver.RunGenerators(compilation);
 
-        var a = driver.GetRunResult().Results.SelectMany(s => s.GeneratedSources);
+        var generatedSources = driver.GetRunResult().Results.SelectMany(s => s.GeneratedSources).ToList();
         
         return Verifier.Verify(driver);
     }

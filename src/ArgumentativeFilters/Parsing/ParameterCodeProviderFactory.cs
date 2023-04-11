@@ -28,14 +28,14 @@ public static class ParameterCodeProviderFactory
         
         foreach (var attributeSymbol in parameterSymbol.GetAttributes())
         {
-            if(attributeSymbol is null || attributeSymbol.AttributeClass is null) continue;
+            if(attributeSymbol?.AttributeClass is null) continue;
         
             INamedTypeSymbol attributeContainingTypeSymbol = attributeSymbol.AttributeClass;
             string fullName = attributeContainingTypeSymbol.ToDisplayString();
         
             if (fullName == "ArgumentativeFilters.IndexOfAttribute")
             {
-                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.");
+                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.", parameterSymbol.IsRequired());
             }
             
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
@@ -44,7 +44,7 @@ public static class ParameterCodeProviderFactory
             }
         }
 
-        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, GetFullyQualifiedTypeName(parameterSymbol.Type));
+        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, GetFullyQualifiedTypeName(parameterSymbol.Type), parameterSymbol.IsRequired());
     }
     
     private static bool IsRequired(this IParameterSymbol parameterSymbol) =>
