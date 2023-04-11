@@ -2,7 +2,7 @@
   <ItemGroup>
     <PackageVersion Include="ArgumentativeFilters" Version="0.0.1-preview6" />
     <PackageVersion Include="coverlet.msbuild" Version="3.2.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
