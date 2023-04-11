@@ -25,16 +25,16 @@ public abstract class ArgumentativeFilterTests : IDisposable
     }
 
     [MemberNotNull(nameof(_context))]
-    public void Initialize(Delegate endpointSignature, IList<object?> argumentValues)
+    protected void SetupContext(Delegate endpointDelegate, IList<object?> argumentValues)
     {
-        ArgumentNullException.ThrowIfNull(endpointSignature);
+        ArgumentNullException.ThrowIfNull(endpointDelegate);
         ServiceProvider serviceProvider = Services.BuildServiceProvider();
         _serviceScope = serviceProvider.CreateScope();
         
         EndpointFilterFactoryContext factoryContext = new ()
         {
             ApplicationServices = serviceProvider,
-            MethodInfo = endpointSignature.Method
+            MethodInfo = endpointDelegate.Method
         };
 
         HttpContext httpContext = new DefaultHttpContext { RequestServices = _serviceScope.ServiceProvider };
@@ -48,7 +48,9 @@ public abstract class ArgumentativeFilterTests : IDisposable
             InvocationContext = invocationContext,
         };
     }
-
+    
+    protected static EndpointFilterDelegate NullEndpointFilterDelegate { get; } = _ => ValueTask.FromResult<object?>(null);
+    
     protected virtual void Dispose(bool disposing)
     {
         if (disposing)
