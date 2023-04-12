@@ -68,7 +68,7 @@ public static class ParameterCodeProviderFactory
         => $"global::System.Nullable<{GetTypeNameWithStrippedNullability(typeSymbol)}>";
     
     private static string GetGloballyQualifiedTypeName(ITypeSymbol typeSymbol) 
-        => $"global::{GetTypeNameWithStrippedNullability(typeSymbol)}:{typeSymbol.SpecialType}";
+        => $"global::{GetTypeNameWithStrippedNullability(typeSymbol)}";
 
     private static string GetTypeNameWithStrippedNullability(ITypeSymbol typeSymbol) =>
         typeSymbol.NullableAnnotation == NullableAnnotation.None
