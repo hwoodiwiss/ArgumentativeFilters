@@ -1,8 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-
+﻿using System.Threading.Tasks;
 using ArgumentativeFilters;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

@@ -1,5 +1,4 @@
 ﻿using System.Text;
-
 using ArgumentativeFilters.CodeGeneration.Extensions;
 
 namespace ArgumentativeFilters.CodeGeneration;

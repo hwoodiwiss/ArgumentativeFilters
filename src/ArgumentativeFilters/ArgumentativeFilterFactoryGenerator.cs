@@ -1,11 +1,9 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
-
 using ArgumentativeFilters.CodeGeneration;
 using ArgumentativeFilters.CodeGeneration.Extensions;
 using ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
 using ArgumentativeFilters.Parsing;
-
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;

@@ -1,6 +1,5 @@
 ﻿using ArgumentativeFilters.CodeGeneration.Parameters;
 using ArgumentativeFilters.Extensions;
-
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ArgumentativeFilters.Parsing;
