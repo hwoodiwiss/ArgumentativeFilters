@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using ArgumentativeFilters;
 
@@ -15,7 +16,12 @@ public sealed partial class ParentClass
     internal static partial class ExampleNonNullableFilter
     {
         [ArgumentativeFilter]
-        private static ValueTask<object> NormalizeRouteStringsFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, string country, [IndexOf(nameof(country))] int countryIndex, [FromServices] IConfiguration configuration)
+        private static ValueTask<object> NormalizeRouteStringsFilter(
+            EndpointFilterInvocationContext context,
+            EndpointFilterDelegate next,
+            string country,
+            [IndexOf(nameof(country))] int countryIndex,
+            [FromServices] IConfiguration configuration)
         {
             context.Arguments[countryIndex] = country.ToUpperInvariant();
             return next(context);
@@ -25,7 +31,12 @@ public sealed partial class ParentClass
 internal static partial class ExampleNonNullableFilter
 {
     [ArgumentativeFilter]
-    private static ValueTask<object> NormalizeRouteStringsFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, string country, [IndexOf(nameof(country))] int countryIndex, [FromServices] IConfiguration configuration)
+    private static ValueTask<object> NormalizeRouteStringsFilter(
+        EndpointFilterInvocationContext context,
+        EndpointFilterDelegate next,
+        string country,
+        [IndexOf(nameof(country))] int countryIndex,
+        [FromServices] IConfiguration configuration)
     {
         context.Arguments[countryIndex] = country.ToUpperInvariant();
         return next(context);
