@@ -14,7 +14,7 @@ public class FilterFactoryBuilder
     readonly StringBuilder _builder;
     private readonly string _startingIndentation;
     private readonly string _factoryIndentation;
-    private readonly string _filterIndentation;
+    private string _filterIndentation;
     private string _conditionalIndentation;
 
     
@@ -57,6 +57,8 @@ public class FilterFactoryBuilder
 
         if (distinctConditions.Length == 0)
         {
+            // Reduce indentation by one level for everything under the non-existent condition
+            _filterIndentation = _conditionalIndentation;
             _conditionalIndentation = _factoryIndentation;
             _hasCondition = false;
             return this;

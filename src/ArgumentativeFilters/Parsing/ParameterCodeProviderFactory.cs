@@ -1,4 +1,5 @@
 ﻿using ArgumentativeFilters.CodeGeneration.Parameters;
+using ArgumentativeFilters.Extensions;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -35,43 +36,15 @@ public static class ParameterCodeProviderFactory
         
             if (fullName == "ArgumentativeFilters.IndexOfAttribute")
             {
-                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.", parameterSymbol.IsRequired());
+                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.", !parameterSymbol.IsNullable());
             }
             
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
             {
-                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, GetFullyQualifiedTypeName(parameterSymbol.Type), parameterSymbol.IsRequired());
+                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), parameterSymbol.IsServiceRequired());
             }
         }
 
-        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, GetFullyQualifiedTypeName(parameterSymbol.Type), parameterSymbol.IsRequired());
+        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), !parameterSymbol.IsNullable());
     }
-    
-    private static bool IsRequired(this IParameterSymbol parameterSymbol) =>
-        parameterSymbol.NullableAnnotation != NullableAnnotation.None 
-            ? parameterSymbol.NullableAnnotation == NullableAnnotation.NotAnnotated 
-            : !parameterSymbol.IsOptional;
-
-    private static string GetFullyQualifiedTypeName(ITypeSymbol? typeSymbol)
-    {
-        if (typeSymbol is null) throw new ArgumentNullException(nameof(typeSymbol));
-
-        return typeSymbol switch
-        {
-            { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } => GetValueTypeName(typeSymbol),
-            { SpecialType: SpecialType.None } => GetGloballyQualifiedTypeName(typeSymbol),
-            _ => GetTypeNameWithStrippedNullability(typeSymbol),
-        };
-    }
-    
-    private static string GetValueTypeName(ITypeSymbol typeSymbol) 
-        => $"global::System.Nullable<{GetTypeNameWithStrippedNullability(typeSymbol)}>";
-    
-    private static string GetGloballyQualifiedTypeName(ITypeSymbol typeSymbol) 
-        => $"global::{GetTypeNameWithStrippedNullability(typeSymbol)}";
-
-    private static string GetTypeNameWithStrippedNullability(ITypeSymbol typeSymbol) =>
-        typeSymbol.NullableAnnotation == NullableAnnotation.None
-            ? typeSymbol.ToDisplayString()
-            : typeSymbol.ToDisplayString().Replace("?", string.Empty);
 }
