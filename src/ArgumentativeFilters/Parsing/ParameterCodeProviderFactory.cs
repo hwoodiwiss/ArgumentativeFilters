@@ -36,7 +36,7 @@ public static class ParameterCodeProviderFactory
         
             if (fullName == "ArgumentativeFilters.IndexOfAttribute")
             {
-                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.", parameterSymbol.IsNullable());
+                return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.", !parameterSymbol.IsNullable());
             }
             
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
@@ -45,6 +45,6 @@ public static class ParameterCodeProviderFactory
             }
         }
 
-        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), parameterSymbol.IsNullable());
+        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), !parameterSymbol.IsNullable());
     }
 }
