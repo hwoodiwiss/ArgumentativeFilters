@@ -8,60 +8,60 @@ public partial class IndexOfAttributeTests : ArgumentativeFilterTests
     [MemberData(nameof(EndpointDelegatesWithExpectedParamIndex))]
     public async Task IndexOfAttribute_WhenAppliedToParameter_ShouldPassCorrectIndexToFilter(Delegate endpointSignature, int paramIndex)
     {
-        // Arrange
-        SetupContext(endpointSignature, new List<object?>());
-        var filter = NonOptionalIndexFilter.Factory(Context.FactoryContext, NullEndpointFilterDelegate);
+        await TestFilterFactoryBehaviour<NonOptionalIndexFilter>(
+            endpointSignature,
+            async (context, filter, _) => {
+                // Act
+                var result = await filter(context.InvocationContext);
         
-        // Act
-        var result = ((await filter(Context.InvocationContext)) ?? int.MinValue);
-        
-        // Assert
-        result.ShouldBe(paramIndex);
+                // Assert
+                result.ShouldBe(paramIndex);
+            });
     }
     
     [Fact]
     public async Task IndexOfAttribute_WhenAppliedToNonOptionalParameter_AndParameterDoesNotExistOnEndpoint_ShouldFallBackToDefault()
     {
-        // Arrange
-        SetupContext((string test) => test, new List<object?>());
-        var filter = NonOptionalIndexFilter.Factory(Context.FactoryContext, NullEndpointFilterDelegate);
+        await TestFilterFactoryBehaviour<NonOptionalIndexFilter>(
+            (string test) => test,
+            async (context, filter, fallbackResult) => {
+                // Act
+                var result = await filter(context.InvocationContext);
         
-        // Act
-        var result = await filter(Context.InvocationContext);
-        
-        // Assert
-        result.ShouldBe(null);
+                // Assert
+                result.ShouldBe(fallbackResult);
+            });
     }
     
     [Fact]
     public async Task IndexOfAttribute_WhenAppliedToOptionalParameter_AndParameterDoesNotExistOnEndpoint_ShouldStillCallFilter()
     {
-        // Arrange
-        SetupContext((string test) => test, new List<object?>());
-        var filter = OptionalIndexFilter.Factory(Context.FactoryContext, NullEndpointFilterDelegate);
+        await TestFilterFactoryBehaviour<OptionalIndexFilter>(
+            (string test) => test,
+            async (context, filter, fallbackResult) => {
+                // Act
+                var result = await filter(context.InvocationContext);
         
-        // Act
-        var result = await filter(Context.InvocationContext);
-        
-        // Assert
-        result.ShouldBe(false);
+                // Assert
+                result.ShouldNotBe(fallbackResult);
+            });
     }
     
     [Fact]
-    public async Task IndexOfAttribute_WhenAppliedToOptionalParameter_AndParameterDoesExistOnEndpoint_ShouldStillCallFilter()
+    public async Task IndexOfAttribute_WhenAppliedToOptionalParameter_AndParameterDoesExistOnEndpoint_ShouldCallFilter()
     {
-        // Arrange
-        SetupContext((string expectedParam) => expectedParam, new List<object?>());
-        var filter = OptionalIndexFilter.Factory(Context.FactoryContext, NullEndpointFilterDelegate);
+        await TestFilterFactoryBehaviour<OptionalIndexFilter>(
+            (string expectedParam) => expectedParam,
+            async (context, filter, fallbackResult) => {
+                // Act
+                var result = await filter(context.InvocationContext);
         
-        // Act
-        var result = await filter(Context.InvocationContext);
-        
-        // Assert
-        result.ShouldBe(true);
+                // Assert
+                result.ShouldBe(true);
+            });
     }
     
-    internal static partial class NonOptionalIndexFilter
+    public partial class NonOptionalIndexFilter : IFilterFactory
     {
         [ArgumentativeFilter]
         private static ValueTask<object?> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, [IndexOf("expectedParam")] int actualIndex)
@@ -70,7 +70,7 @@ public partial class IndexOfAttributeTests : ArgumentativeFilterTests
         }
     }
     
-    internal static partial class OptionalIndexFilter
+    public partial class OptionalIndexFilter : IFilterFactory
     {
         [ArgumentativeFilter]
         private static ValueTask<object?> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, [IndexOf("expectedParam")] int? actualIndex)

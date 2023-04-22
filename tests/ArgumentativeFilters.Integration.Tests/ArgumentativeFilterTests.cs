@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ArgumentativeFilters.Integration.Tests;
 
+public delegate Task ArgumentativeFilterTest(ArgumentativeFilterTestContext context, EndpointFilterDelegate filter, Guid uniqueFallbackResult);
+
 public abstract class ArgumentativeFilterTests : IDisposable
 {
     private IServiceScope? _serviceScope;
@@ -62,5 +64,16 @@ public abstract class ArgumentativeFilterTests : IDisposable
     {
         Dispose(true);
         GC.SuppressFinalize(this);
+    }
+    
+    internal async Task TestFilterFactoryBehaviour<T>(Delegate endpointDelegate, ArgumentativeFilterTest test, IList<object?>? argumentValues = null)
+        where T : IFilterFactory
+    {
+        ArgumentNullException.ThrowIfNull(test);
+        var uniqueResult = Guid.NewGuid();
+        EndpointFilterDelegate uniqueDelegate = _ => ValueTask.FromResult<object?>(uniqueResult);
+        SetupContext(endpointDelegate, argumentValues ?? new List<object?>());
+        var filter = T.Factory(Context.FactoryContext, uniqueDelegate);
+        await test(Context, filter, uniqueResult);
     }
 }
