@@ -477,4 +477,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # InteliJ IDE directories
-.idea/
+.idea
+
+# Vim temporary swap files
+*.swp
