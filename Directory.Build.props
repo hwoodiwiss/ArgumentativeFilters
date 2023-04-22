@@ -7,6 +7,7 @@
     <DefaultWebApiFramework>net7.0</DefaultWebApiFramework>
     <Deterministic>true</Deterministic>
     <Description>A source generator to make convenient Minimal API filter factories</Description>
+    <EnablePackageValidation>true</EnablePackageValidation>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
@@ -17,6 +18,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
     <VersionPrefix>0.0.1</VersionPrefix>
     <VersionSuffix>preview9</VersionSuffix>
   </PropertyGroup>

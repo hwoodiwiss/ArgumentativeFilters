@@ -38,7 +38,7 @@ foreach ($testProjectPath in $testProjectPaths) {
 }
 
 foreach ($packageProjectPath in $packageProjectPaths) {
-    dotnet pack $packageProjectPath --configuration $Configuration --output (Join-Path $OutputPath "packages")
+    dotnet pack $packageProjectPath --configuration $Configuration
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet pack failed with exit code $LASTEXITCODE"
