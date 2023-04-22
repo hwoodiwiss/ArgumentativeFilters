@@ -7,52 +7,60 @@ public partial class ReferenceNullabilityTests : ArgumentativeFilterTests
     [Fact]
     public async Task NonNullableParameter_WhenMissingDuringCreation_CausesFilterFallback()
     {
-        // Arrange
-        var uniqueResult = Guid.NewGuid();
-        EndpointFilterDelegate uniqueDelegate = _ => ValueTask.FromResult<object?>(uniqueResult);
-        SetupContext((int notTest) => notTest, new List<object?>());
-        var filter = NonNullableParameterFilter.Factory(Context.FactoryContext, uniqueDelegate);
+        await TestFilterFactoryBehaviour<NonNullableParameterArgumentativeFilter>(
+            (string notTest) => notTest,
+            async (context, filter, fallbackResult) => {
+                // Act
+                var result = await filter(context.InvocationContext);
         
-        // Act
-        var result = await filter(Context.InvocationContext);
-        
-        // Assert
-        result.ShouldBe(uniqueResult);
+                // Assert
+                result.ShouldBe(fallbackResult);
+            });
     }
     
     [Fact]
     public async Task NullableParameter_WhenMissingDuringCreation_RunsFilter()
     {
-        // Arrange
-        var uniqueResult = Guid.NewGuid();
-        EndpointFilterDelegate uniqueDelegate = _ => ValueTask.FromResult<object?>(uniqueResult);
-        SetupContext((int notTest) => notTest, new List<object?>());
-        var filter = NullableParameterFilter.Factory(Context.FactoryContext, uniqueDelegate);
+        await TestFilterFactoryBehaviour<NullableParameterFilter>(
+            (string notTest) => notTest,
+            async (context, filter, _) => {
+                // Act
+                var result = await filter(context.InvocationContext);
         
-        // Act
-        var result = await filter(Context.InvocationContext);
-        
-        // Assert
-        result.ShouldBeNull();
+                // Assert
+                result.ShouldBeNull();
+            });
     }
     
     [Fact]
-    public async Task NonNrtParameter_WhenMissingDuringCreation_RunsFilter()
+    public async Task NonNrtParameter_WhenMissingDuringCreation_CausesFilterFallback()
     {
-        // Arrange
-        var uniqueResult = Guid.NewGuid();
-        EndpointFilterDelegate uniqueDelegate = _ => ValueTask.FromResult<object?>(uniqueResult);
-        SetupContext((int notTest) => notTest, new List<object?>());
-        var filter = NonNrtContextParameterFilter.Factory(Context.FactoryContext, uniqueDelegate);
+        await TestFilterFactoryBehaviour<NonNrtContextParameterFilter>(
+            (string notTest) => notTest,
+            async (context, filter, fallbackResult) => {
+                // Act
+                var result = await filter(context.InvocationContext);
         
-        // Act
-        var result = await filter(Context.InvocationContext);
+                // Assert
+                result.ShouldBe(fallbackResult);
+            });
+    }    
+    
+    [Fact]
+    public async Task OptionalNonNrtParameter_WhenMissingDuringCreation_RunsFilter()
+    {
+        await TestFilterFactoryBehaviour<OptionalNonNrtContextParameterFilter>(
+            (string notTest) => notTest,
+            async (context, filter, _) => {
+                // Act
+                var result = await filter(context.InvocationContext);
         
-        // Assert
-        result.ShouldBeNull();
+                // Assert
+                result.ShouldBeNull();
+            });
     }
     
-    internal static partial class NonNullableParameterFilter
+    public partial class NonNullableParameterArgumentativeFilter : IFilterFactory
     {
         [ArgumentativeFilter]
         public static ValueTask<object?> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, string test)
@@ -61,7 +69,7 @@ public partial class ReferenceNullabilityTests : ArgumentativeFilterTests
         }
     }
     
-    internal static partial class NullableParameterFilter
+    public partial class NullableParameterFilter : IFilterFactory
     {
         [ArgumentativeFilter]
         public static ValueTask<object?> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, string? test)
@@ -70,11 +78,22 @@ public partial class ReferenceNullabilityTests : ArgumentativeFilterTests
         }
     }
     
-    internal static partial class NonNrtContextParameterFilter
+    public partial class NonNrtContextParameterFilter : IFilterFactory
     {
 #nullable disable
         [ArgumentativeFilter]
         public static ValueTask<object> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, string test)
+        {
+            return ValueTask.FromResult<object>(null);
+        }
+#nullable restore
+    }    
+    
+    public partial class OptionalNonNrtContextParameterFilter : IFilterFactory
+    {
+#nullable disable
+        [ArgumentativeFilter]
+        public static ValueTask<object> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, string test = null)
         {
             return ValueTask.FromResult<object>(null);
         }

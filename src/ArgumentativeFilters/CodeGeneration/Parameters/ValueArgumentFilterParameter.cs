@@ -1,20 +1,31 @@
 ﻿using ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
+using ArgumentativeFilters.Extensions;
 
 namespace ArgumentativeFilters.CodeGeneration.Parameters;
 
 public sealed class ValueArgumentFilterParameter : IndexArgumentFilterParameter, IFilterCodeProvider
 {
-    private readonly string _argumentType;
+    private readonly ITypeSymbol _argumentType;
     private const string ValueNameSuffix = "Value";
     
-    public ValueArgumentFilterParameter(string argumentName, string argumentType, bool required) 
+    public ValueArgumentFilterParameter(string argumentName, ITypeSymbol argumentType, bool required) 
         : base(argumentName, required)
     {
         _argumentType = argumentType;
     }
 
-    public string FilterCode => _required ? $"{_argumentType} {_argumentName}{ValueNameSuffix} = {VariableNames.InvocationFilterContext}.GetArgument<{_argumentType}>({_argumentName}{IndexNameSuffix}.Value);"
-        : $"{_argumentType}? {_argumentName}{ValueNameSuffix} = {_argumentName}{IndexNameSuffix}.HasValue ? {VariableNames.InvocationFilterContext}.GetArgument<{_argumentType}>({_argumentName}{IndexNameSuffix}.Value) : null;";
+    public string FilterCode
+    {
+        get
+        {
+            string typeText = _argumentType.GetFullyQualifiedTypeName();
+            string nullableAnnotation = _argumentType.IsReferenceType ? "?" : string.Empty;
+            
+            return _required
+                ? $"{typeText} {_argumentName}{ValueNameSuffix} = {VariableNames.InvocationFilterContext}.GetArgument<{typeText}>({_argumentName}{IndexNameSuffix}.Value);"
+                : $"{typeText}{nullableAnnotation} {_argumentName}{ValueNameSuffix} = {_argumentName}{IndexNameSuffix}.HasValue ? {VariableNames.InvocationFilterContext}.GetArgument<{typeText}>({_argumentName}{IndexNameSuffix}.Value) : null;";
+        }
+    }
 
     public override string ParameterCode => $"{_argumentName}{ValueNameSuffix}";
 }
