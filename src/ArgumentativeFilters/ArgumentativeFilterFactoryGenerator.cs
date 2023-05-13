@@ -13,6 +13,8 @@ namespace ArgumentativeFilters;
 [Generator]
 public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
 {
+    const string ArgumentativeFiltersAttributeName = "ArgumentativeFilters.ArgumentativeFilterAttribute";
+    
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
@@ -24,7 +26,8 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
             SourceText.From(TypeTemplates.IndexOfArgumentAttribute, Encoding.UTF8)));
 
         IncrementalValuesProvider<MethodDeclarationSyntax?> methodDeclarationSyntax = context.SyntaxProvider
-            .CreateSyntaxProvider(
+            .ForAttributeWithMetadataName(
+                ArgumentativeFiltersAttributeName,
                 predicate: static (s, _) => IsSyntaxTargetForGeneration(s),
                 transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx))
             .Where(static m => m is not null);
@@ -40,9 +43,9 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
     private static bool IsSyntaxTargetForGeneration(SyntaxNode syntaxNode) =>
         syntaxNode is MethodDeclarationSyntax { AttributeLists.Count: > 0 };
 
-    private static MethodDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
+    private static MethodDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorAttributeSyntaxContext context)
     {
-        var methodDeclarationSyntax = context.Node as MethodDeclarationSyntax;
+        var methodDeclarationSyntax = context.TargetNode as MethodDeclarationSyntax;
         
         foreach(var attributeList in methodDeclarationSyntax!.AttributeLists)
         {
