@@ -1,5 +1,7 @@
 # Argumentative Filters
 
+[![NuGet](https://img.shields.io/nuget/v/ArgumentativeFilters.svg?maxAge=3600)](https://www.nuget.org/packages/ArgumentativeFilters/)
+
 > :warning: This is an early preview package, and is not intended for production use yet. It is likely broken in a number of ways.
 
 ## Background
