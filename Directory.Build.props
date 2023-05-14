@@ -20,7 +20,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <VersionPrefix>0.0.1</VersionPrefix>
-    <VersionSuffix>preview9</VersionSuffix>
+    <VersionSuffix>preview10</VersionSuffix>
   </PropertyGroup>
   <ItemGroup Condition=" '$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath="\"/>
