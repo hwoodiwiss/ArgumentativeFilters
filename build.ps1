@@ -25,9 +25,6 @@ $packageProjectPaths = @(
 foreach ($buildProjectPath in $buildProjectPaths) {
     dotnet build $buildProjectPath --configuration $Configuration
 
-    # Also create an AOT published build to create an artifact
-    dotnet publish $buildProjectPath --configuration $Configuration /p:PublishAot=true -r win-x64 --framework "net8.0"
-
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet build failed with exit code $LASTEXITCODE"
     }
