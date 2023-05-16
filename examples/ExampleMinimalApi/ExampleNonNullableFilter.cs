@@ -25,6 +25,7 @@ public sealed partial class ParentClass
         }
     }
 }
+
 internal static partial class ExampleNonNullableFilter
 {
     [ArgumentativeFilter]
