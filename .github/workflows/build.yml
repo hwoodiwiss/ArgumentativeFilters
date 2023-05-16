@@ -56,7 +56,7 @@ jobs:
       - name: Publish AOT Compiled Example
         uses: actions/upload-artifact@v3
         with:
-          name: packages
+          name: ExampleMinimalApi-AOT
           path: ./artifacts/bin/ExampleMinimalApi/release_net8.0_win-x64/native
 
   publish-github:
