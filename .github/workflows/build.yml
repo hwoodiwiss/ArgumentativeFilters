@@ -60,7 +60,7 @@ jobs:
         uses: actions/setup-dotnet@v3
 
       - name: Publish Preview to Github Feed
-        run: dotnet nuget push ./artifacts/package/release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate --no-symbols --source https://nuget.pkg.github.com/hwoodiwiss/index.json
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate --no-symbols --source https://nuget.pkg.github.com/hwoodiwiss/index.json
 
   publish-nuget:
     runs-on: ubuntu-latest
