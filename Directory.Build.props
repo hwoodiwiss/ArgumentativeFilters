@@ -19,8 +19,6 @@
     <RepositoryType>git</RepositoryType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseArtifactsOutput>true</UseArtifactsOutput>
-    <VersionPrefix>0.0.2</VersionPrefix>
-    <VersionSuffix>preview.1</VersionSuffix>
   </PropertyGroup>
   <PropertyGroup>
     <MinVerTagPrefix>v</MinVerTagPrefix>
