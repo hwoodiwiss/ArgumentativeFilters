@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ArgumentativeFilters.Integration.Tests.Behaviours;
+namespace ArgumentativeFilters.Functional.Tests.Behaviours;
 
 public partial class ReferenceNullabilityTests : ArgumentativeFilterTests
 {

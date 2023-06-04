@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ArgumentativeFilters.Integration.Tests;
+namespace ArgumentativeFilters.Functional.Tests;
 
 public delegate Task ArgumentativeFilterTest(ArgumentativeFilterTestContext context, EndpointFilterDelegate filter, Guid uniqueFallbackResult);
 

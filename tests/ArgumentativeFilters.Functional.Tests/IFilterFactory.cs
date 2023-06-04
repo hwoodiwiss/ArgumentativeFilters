@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ArgumentativeFilters.Integration.Tests;
+namespace ArgumentativeFilters.Functional.Tests;
 
 internal interface IFilterFactory
 {
