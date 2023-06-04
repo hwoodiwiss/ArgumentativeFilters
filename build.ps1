@@ -12,8 +12,7 @@ $buildProjectPaths = @(
 )
 
 $testProjectPaths = @(
-    "tests/ArgumentativeFilters.Tests/ArgumentativeFilters.Tests.csproj",
-    "tests/ArgumentativeFilters.Integration.Tests/ArgumentativeFilters.Integration.Tests.csproj"
+    "tests/ArgumentativeFilters.Functional.Tests/ArgumentativeFilters.Functional.Tests.csproj"
 )
 
 $packageProjectPaths = @(

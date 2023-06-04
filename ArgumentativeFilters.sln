@@ -23,14 +23,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentativeFilters", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{313FDE40-F228-4BDA-A8FA-E27780961940}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentativeFilters.Tests", "tests\ArgumentativeFilters.Tests\ArgumentativeFilters.Tests.csproj", "{2544E2F1-B925-452C-818A-25088AE5B578}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{634FBCAE-C3C0-4C55-8CCA-6BCCB960CDD6}"
 	ProjectSection(SolutionItems) = preProject
 		.github\dependabot.yml = .github\dependabot.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentativeFilters.Integration.Tests", "tests\ArgumentativeFilters.Integration.Tests\ArgumentativeFilters.Integration.Tests.csproj", "{9BA03978-CA26-4082-BFC1-8363983C9324}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentativeFilters.Functional.Tests", "tests\ArgumentativeFilters.Functional.Tests\ArgumentativeFilters.Functional.Tests.csproj", "{9BA03978-CA26-4082-BFC1-8363983C9324}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{0D7E6F0D-1CE5-46D5-AFED-6A974B45CAD5}"
 	ProjectSection(SolutionItems) = preProject
@@ -48,7 +46,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AE02EA4A-D6B4-46E6-A12D-9A1857451AA7} = {B908D152-98BD-4814-B6F1-AFF36DBD3D62}
-		{2544E2F1-B925-452C-818A-25088AE5B578} = {313FDE40-F228-4BDA-A8FA-E27780961940}
 		{634FBCAE-C3C0-4C55-8CCA-6BCCB960CDD6} = {D1D6CAE9-D15C-4172-8658-55B23B1CD63C}
 		{9BA03978-CA26-4082-BFC1-8363983C9324} = {313FDE40-F228-4BDA-A8FA-E27780961940}
 		{0D7E6F0D-1CE5-46D5-AFED-6A974B45CAD5} = {D1D6CAE9-D15C-4172-8658-55B23B1CD63C}
@@ -62,10 +59,6 @@ Global
 		{C97A8A82-00CB-4DEE-A986-D8503B9A158D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C97A8A82-00CB-4DEE-A986-D8503B9A158D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C97A8A82-00CB-4DEE-A986-D8503B9A158D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2544E2F1-B925-452C-818A-25088AE5B578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2544E2F1-B925-452C-818A-25088AE5B578}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2544E2F1-B925-452C-818A-25088AE5B578}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2544E2F1-B925-452C-818A-25088AE5B578}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9BA03978-CA26-4082-BFC1-8363983C9324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9BA03978-CA26-4082-BFC1-8363983C9324}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BA03978-CA26-4082-BFC1-8363983C9324}.Release|Any CPU.ActiveCfg = Release|Any CPU
