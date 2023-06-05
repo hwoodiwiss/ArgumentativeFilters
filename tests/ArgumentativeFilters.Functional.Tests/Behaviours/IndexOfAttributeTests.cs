@@ -38,12 +38,12 @@ public partial class IndexOfAttributeTests : ArgumentativeFilterTests
     {
         await TestFilterFactoryBehaviour<OptionalIndexFilter>(
             (string test) => test,
-            async (context, filter, fallbackResult) => {
+            async (context, filter, _) => {
                 // Act
                 var result = await filter(context.InvocationContext);
         
                 // Assert
-                result.ShouldNotBe(fallbackResult);
+                result.ShouldBe(false);
             });
     }
     
@@ -52,7 +52,7 @@ public partial class IndexOfAttributeTests : ArgumentativeFilterTests
     {
         await TestFilterFactoryBehaviour<OptionalIndexFilter>(
             (string expectedParam) => expectedParam,
-            async (context, filter, fallbackResult) => {
+            async (context, filter, _) => {
                 // Act
                 var result = await filter(context.InvocationContext);
         
