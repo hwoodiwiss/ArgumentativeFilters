@@ -4,50 +4,54 @@ namespace ArgumentativeFilters.Functional.Tests.Behaviours;
 
 public partial class ValueNullabilityTests : ArgumentativeFilterTests
 {
+    const string FilterRunResult = nameof(ValueNullabilityTests);
+
     [Fact]
     public async Task NonNullableParameter_WhenMissingDuringCreation_CausesFilterFallback()
     {
         await TestFilterFactoryBehaviour<NonNullableParameterFilter>(
             (string notTest) => notTest,
-            async (context, filter, fallbackResult) => {
+            async (context, filter, fallbackResult) =>
+            {
                 // Act
                 var result = await filter(context.InvocationContext);
-        
+
                 // Assert
                 result.ShouldBe(fallbackResult);
             });
     }
-    
+
     [Fact]
     public async Task NullableParameter_WhenMissingDuringCreation_RunsFilter()
     {
         await TestFilterFactoryBehaviour<NullableParameterFilter>(
             (string notTest) => notTest,
-            async (context, filter, _) => {
+            async (context, filter, _) =>
+            {
                 // Act
                 var result = await filter(context.InvocationContext);
-        
+
                 // Assert
-                result.ShouldBeNull();
+                result.ShouldBe(FilterRunResult);
             });
     }
-    
+
     public partial class NonNullableParameterFilter : IFilterFactory
     {
         [ArgumentativeFilter]
         public static ValueTask<object?> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, int test)
         {
-            return ValueTask.FromResult<object?>(null);
+            return ValueTask.FromResult<object?>(FilterRunResult);
         }
     }
-    
+
     public partial class NullableParameterFilter : IFilterFactory
     {
         [ArgumentativeFilter]
         public static ValueTask<object?> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, int? test)
         {
-            return ValueTask.FromResult<object?>(null);
+            return ValueTask.FromResult<object?>(FilterRunResult);
         }
     }
-    
+
 }
