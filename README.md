@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/ArgumentativeFilters.svg?maxAge=3600)](https://www.nuget.org/packages/ArgumentativeFilters/)
 
-> :warning: This is an early preview package, and is not intended for production use yet. It is likely broken in a number of ways.
+> :warning: This package is currently in preview, and is subject to change.
 
 ## Background
 
@@ -14,16 +14,7 @@ To be able to access arguments by name, a [filter factory](https://learn.microso
 
 If that sounds a bit labour intensive, that's because it is. That's where Argumentative Filters come in.
 
-With Argumentative Filters, a filter can be created as a static method that takes an `EndpointFilterInvocationContext` and an `EndpointFilterDelegate` as required parameters. Other kinds of parameters are also supported and documented [below](#supported-parameters--modifiers).
-
-## Roadmap/Wishlist
-
-- [ ] Work in non-trivial cases :sweat_smile:
-- [ ] Have tests
-- [ ] Support nested classes
-- [ ] Provide usage analyzers
-- [ ] Allow specifying preferred scope for injected services (Can exclude scoped services and resolve services from `EndpointFilterFactoryContext.ApplcationServices`)
-- [ ] Provide some way to define fallback behaviour if filter arguments cannot be matched
+With Argumentative Filters, a filter can be created as a static method that takes an `EndpointFilterInvocationContext` and an `EndpointFilterDelegate` as required parameters. Other kinds of parameters are also supported, documentation for these can be found [here](/docs/parameter-modifiers.md).
 
 ## Usage
 
@@ -48,25 +39,3 @@ public static partial class ExampleFilter
 app.MapGet("/my/route/{parameter}", (string parameter) => parameter)
     .AddEndpointFilterFactory(ExampleFilter.Factory);
 ```
-
-## Parameter Modifiers
-
-### IndexOf
-
-This source generator provides an IndexOfAttribute with a single constructor argument, which is the endpoint argument to populate the annotated parameter with.
-
-```csharp
-[IndexOf(nameof(parameter))] int parameterIndex
-```
-
-This can be useful for cases where the the filter is going to be used to mutate endpoint parameters.
-
-### FromServices
-
-This source generator has special handling for parameters annotated with the `Microsoft.AspNetCore.Mvc.FromServicesAttribute`.
-When a parameter has this attribute, the generated factory will attempt to resolve an instance of the parameter type from the `HttpContext.RequestServices` scoped service provider.
-Nullability and Optionallity are respected when doing this. 
-
-> *Note :notebook:*
-> - In nullable reference type contexts if the parameter is marked as nullable, `IServiceProvider.GetService` is used, otherwise `IServiceProvider.GetRequiredService` is used, and the factory will throw if the service cannot be resolved.
-> - In contexts where nullable reference types are not enabled `IServiceProvider.GetRequiredService` will be used unless the parameter is _optional_.

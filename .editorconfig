@@ -5,7 +5,7 @@ root = true
 indent_style = space
 
 # Xml files
-[*.{xml,csproj,config,targets,props,projitems,shproj}]
+[*.{xml,csproj,config,targets,props,projitems,shproj,json,jsonc}]
 indent_size = 2
 
 # C# files
