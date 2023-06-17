@@ -10,29 +10,19 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Filter Signature**
+If applicable, please can you paste the signature of your filter method, including any attributes. This will help with reproduction.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Generated Factory**
+If applicable, please can you paste the generated factory code that has issues.
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Environment (please complete the following information):**
+ - OS: [e.g. Windows 11, Ubuntu]
+ - IDE: [e.g. Visual Studio, Rider]
+ - Version: [The IDE version, e.g. 16.1.1]
 
 **Additional context**
 Add any other context about the problem here.
