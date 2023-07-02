@@ -12,4 +12,7 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+  <ItemGroup>
+    <CompilerVisibleProperty Include="ArgumentativeFilters_WriteDebug" />
+  </ItemGroup>
 </Project>
