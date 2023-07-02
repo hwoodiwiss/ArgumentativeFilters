@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 using ArgumentativeFilters.CodeGeneration;
 using ArgumentativeFilters.CodeGeneration.Extensions;
@@ -6,6 +7,7 @@ using ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
 using ArgumentativeFilters.Parsing;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
 namespace ArgumentativeFilters;
@@ -18,11 +20,11 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-            "ArgumentativeFilterAttribute.g.cs", 
+            "ArgumentativeFilters.ArgumentativeFilterAttribute.g.cs", 
             SourceText.From(TypeTemplates.ArgumentativeFilterAttribute, Encoding.UTF8)));
         
         context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-            "IndexOfArgumentAttribute.g.cs", 
+            "ArgumentativeFilters.IndexOfArgumentAttribute.g.cs", 
             SourceText.From(TypeTemplates.IndexOfArgumentAttribute, Encoding.UTF8)));
 
         IncrementalValuesProvider<MethodDeclarationSyntax?> methodDeclarationSyntax = context.SyntaxProvider
@@ -32,12 +34,11 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
                 transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx))
             .Where(static m => m is not null);
         
-        // Combine the selected enums with the `Compilation`
-        IncrementalValueProvider<(Compilation, ImmutableArray<MethodDeclarationSyntax?>)> compilationAndEnums
-            = context.CompilationProvider.Combine(methodDeclarationSyntax.Collect());
+        IncrementalValueProvider<(AnalyzerConfigOptionsProvider OptionsProvider, (Compilation Compilation, ImmutableArray<MethodDeclarationSyntax?> MethodDeclarations) Syntax)> methodDeclarationsAndAnalyzerConfigOptions
+            = context.AnalyzerConfigOptionsProvider.Combine(context.CompilationProvider.Combine(methodDeclarationSyntax.Collect()));
         
-        context.RegisterSourceOutput(compilationAndEnums,
-            static (spc, source) => Execute(source.Item1, source.Item2!, spc));
+        context.RegisterSourceOutput(methodDeclarationsAndAnalyzerConfigOptions,
+            static (spc, source) => Execute(source.Syntax.Compilation, source.Syntax.MethodDeclarations!, spc, source.OptionsProvider));
     }
     
     private static bool IsSyntaxTargetForGeneration(SyntaxNode syntaxNode) =>
@@ -70,20 +71,49 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
         return null;
     }
         
-    static void Execute(Compilation compilation, ImmutableArray<MethodDeclarationSyntax> methods, SourceProductionContext context)
+    static void Execute(Compilation compilation, ImmutableArray<MethodDeclarationSyntax> methods, SourceProductionContext context, AnalyzerConfigOptionsProvider optionsProvider)
     {
         if (methods.IsDefaultOrEmpty)
         {
             return;
         }
+
+        bool debugOutputEnabled = optionsProvider.GlobalOptions.TryGetValue("build_property.ArgumentativeFilters_WriteDebug", out string? _);
+        
+        StringBuilder sb = new();
+
+        sb.Append(TypeTemplates.ArgumentativeFilterConstantHeader);
+        Stopwatch codegenTimer = new ();
+
+        if (debugOutputEnabled)
+        {
+            codegenTimer.Start();
+        }
         
         foreach (var filter in methods)
         {
-            GenerateFilterFactory(compilation, filter, context);
+            GenerateFilterFactory(compilation, filter, sb);
+            if (filter != methods.Last())
+            {
+                sb.AppendLine();
+            }
         }
+
+        var sourceText = SourceText.From(sb.ToString(), Encoding.UTF8);
+        if (debugOutputEnabled)
+        {
+            var elapsed = codegenTimer.Elapsed;
+            sourceText = sourceText.WithChanges(new List<TextChange>(1)
+            {
+                new(TextSpan.FromBounds(sourceText.Length, sourceText.Length),
+                    $"\n// Generated filter factories in {elapsed.TotalMilliseconds}ms.\n")
+            });
+        }
+        
+        context.AddSource($"ArgumentativeFilters.g.cs", sourceText);
     }
     
-    private static void GenerateFilterFactory(Compilation compilation, MethodDeclarationSyntax filter, SourceProductionContext context)
+    private static void GenerateFilterFactory(Compilation compilation, MethodDeclarationSyntax filter, StringBuilder sb)
     {
         var semanticModel = compilation.GetSemanticModel(filter.SyntaxTree);
         var filterMethodSymbol = semanticModel.GetDeclaredSymbol(filter);
@@ -110,11 +140,10 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
         var parameters = filter.ParameterList.Parameters.Select(s => ParameterCodeProviderFactory.GetParameterCodeProvider(s, compilation)).ToArray();
         var containingTypes = GetContainingTypes(filterMethodSymbol);
 
-        StringBuilder sb = new();
         
         FilterFactoryContainingHierarchyBuilder hierarchyBuilder = new (sb);
 
-        hierarchyBuilder.AddContainingHierarchy(containingTypes);
+        hierarchyBuilder.AddContainingHierarchy(containingTypes, containingNamespace);
 
         FilterFactoryBuilder builder = new (sb, hierarchyBuilder.CurrentIndentationLevel);
         builder
@@ -130,9 +159,6 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
             .AddGetArgumentIndexMethod();
 
         hierarchyBuilder.CloseContainingHierarchy();
-        
-        var codeText = TypeTemplates.ArgumentativeFilterTemplate(containingNamespace, sb.ToString());
-        context.AddSource($"ArgumentativeFilterFactory.{containingClass}.g.cs", SourceText.From(codeText, Encoding.UTF8));
     }
     
     private static Stack<INamedTypeSymbol> GetContainingTypes(IMethodSymbol typeSymbol)

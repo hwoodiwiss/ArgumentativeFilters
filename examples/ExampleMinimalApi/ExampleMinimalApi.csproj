@@ -11,4 +11,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\ArgumentativeFilters\ArgumentativeFilters.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
   </ItemGroup>
+  <PropertyGroup>
+    <ArgumentativeFiltersWriteDebugInfo>true</ArgumentativeFiltersWriteDebugInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <CompilerVisibleProperty Include="ArgumentativeFilters_WriteDebug" />
+  </ItemGroup>
 </Project>

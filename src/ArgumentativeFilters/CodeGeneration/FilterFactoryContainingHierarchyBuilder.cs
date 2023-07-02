@@ -15,16 +15,26 @@ public class FilterFactoryContainingHierarchyBuilder
     public FilterFactoryContainingHierarchyBuilder(StringBuilder builder)
     {
         _builder = builder;
-        _currentIndentationLevel = 4;
+        _currentIndentationLevel = 0;
     }
 
-    public FilterFactoryContainingHierarchyBuilder AddContainingHierarchy(IEnumerable<INamedTypeSymbol> containingClassSymbols)
+    public FilterFactoryContainingHierarchyBuilder AddContainingHierarchy(IEnumerable<INamedTypeSymbol> containingClassSymbols, string containingNamespace)
     {
+        AddContainingNamespace(containingNamespace);
+        
         foreach(var containingClassSymbol in containingClassSymbols)
         {
             AddContainingClass(containingClassSymbol);
         }
         
+        return this;
+    }
+    
+    private FilterFactoryContainingHierarchyBuilder AddContainingNamespace(string containingNamespace)
+    {
+        _builder.AppendLine($"namespace {containingNamespace}");
+        _builder.AppendLine("{");
+        _currentIndentationLevel += Constants.IndentationPerLevel;
         return this;
     }
 
@@ -60,7 +70,9 @@ public class FilterFactoryContainingHierarchyBuilder
             var indentation = GetOrCreateIndentationLevel(_currentIndentationLevel - (i * Constants.IndentationPerLevel));
             _builder.AppendLine($"{indentation}}}");
         }
-
+        
+        // Close containing namespace
+        _builder.AppendLine("}");
 
         return this;
     }
