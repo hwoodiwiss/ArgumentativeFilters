@@ -37,7 +37,7 @@ jobs:
 
       - name: Build
         shell: pwsh
-        run: ./build.ps1 --SkipTests
+        run: ./build.ps1 -SkipTests
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
