@@ -2,11 +2,11 @@ name: code-ql
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   schedule:
-    - cron: '20 4 * * 0'
+    - cron: "20 4 * * 0"
 
 jobs:
   analyze:
@@ -21,24 +21,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'csharp' ]
+        language: ["csharp"]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    
-    - name: Setup .NET Sdk
-      uses: actions/setup-dotnet@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
+      - name: Setup .NET Sdk
+        uses: actions/setup-dotnet@v3
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:${{matrix.language}}"
+      - name: Build
+        shell: pwsh
+        run: ./build.ps1 -SkipTests
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
