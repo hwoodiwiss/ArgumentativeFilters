@@ -1,4 +1,4 @@
-﻿namespace ArgumentativeFilters.CodeGeneration.Extensions;
+﻿namespace ArgumentativeFilters.Generator.CodeGeneration.Extensions;
 
 public static class INamedTypeSymbolExtensions
 {

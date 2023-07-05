@@ -1,6 +1,6 @@
-﻿using ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
+﻿using ArgumentativeFilters.Generator.CodeGeneration.Parameters.Abstract;
 
-namespace ArgumentativeFilters.CodeGeneration.Parameters;
+namespace ArgumentativeFilters.Generator.CodeGeneration.Parameters;
 
 public class ServiceArgumentFilterParameter : ArgumentativeFilterParameterProvider, IFilterCodeProvider
 {

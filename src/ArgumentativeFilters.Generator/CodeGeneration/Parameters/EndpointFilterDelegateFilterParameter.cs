@@ -1,4 +1,4 @@
-﻿namespace ArgumentativeFilters.CodeGeneration.Parameters;
+﻿namespace ArgumentativeFilters.Generator.CodeGeneration.Parameters;
 
 public class EndpointFilterDelegateFilterParameter : ArgumentativeFilterParameterProvider
 {

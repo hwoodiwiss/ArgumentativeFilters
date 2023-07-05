@@ -1,4 +1,4 @@
-﻿namespace ArgumentativeFilters.CodeGeneration;
+﻿namespace ArgumentativeFilters.Generator.CodeGeneration;
 
 public static class TypeTemplates
 {
@@ -10,7 +10,7 @@ using global::Microsoft.Extensions.DependencyInjection;
 #nullable enable
 
 ";
-    
+
     public static string ArgumentativeFilterAttribute => $@"
 using global::System;
 

@@ -9,7 +9,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ArgumentativeFilters\ArgumentativeFilters.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+    <ProjectReference Include="..\..\src\ArgumentativeFilters\ArgumentativeFilters.Generator.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <ArgumentativeFiltersWriteDebugInfo>true</ArgumentativeFiltersWriteDebugInfo>
