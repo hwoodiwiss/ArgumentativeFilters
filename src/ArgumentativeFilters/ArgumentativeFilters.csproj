@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>$(DefaultClassLibFramework)</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArgumentativeFilters.Generator\ArgumentativeFilters.Generator.csproj" PackAsAnalyzer="true" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

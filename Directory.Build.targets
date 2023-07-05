@@ -1,4 +1,7 @@
 <Project>
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyAnalyzerReferenceToPackage</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
     <CollectCoverage Condition=" '$(CollectCoverage)' == '' ">true</CollectCoverage>
     <CoverletOutput Condition=" '$(OutputPath)' != '' ">$(OutputPath)\</CoverletOutput>
@@ -10,4 +13,9 @@
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+   <Target Name="CopyAnalyzerReferenceToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PackAsAnalyzer', 'true'))" TargetPath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+  </Target>
 </Project>

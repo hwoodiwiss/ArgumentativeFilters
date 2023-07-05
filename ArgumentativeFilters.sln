@@ -36,6 +36,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\dependabot-autoapprove.yml = .github\workflows\dependabot-autoapprove.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8B8CD357-9AE6-4DB7-B77E-FE8F17724E79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentativeFilters", "src\ArgumentativeFilters\ArgumentativeFilters.csproj", "{74DC45F6-41D5-4F8A-AC50-A0C105640378}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +58,10 @@ Global
 		{9BA03978-CA26-4082-BFC1-8363983C9324}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BA03978-CA26-4082-BFC1-8363983C9324}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BA03978-CA26-4082-BFC1-8363983C9324}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74DC45F6-41D5-4F8A-AC50-A0C105640378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74DC45F6-41D5-4F8A-AC50-A0C105640378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74DC45F6-41D5-4F8A-AC50-A0C105640378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74DC45F6-41D5-4F8A-AC50-A0C105640378}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,5 +71,7 @@ Global
 		{634FBCAE-C3C0-4C55-8CCA-6BCCB960CDD6} = {D1D6CAE9-D15C-4172-8658-55B23B1CD63C}
 		{9BA03978-CA26-4082-BFC1-8363983C9324} = {313FDE40-F228-4BDA-A8FA-E27780961940}
 		{0D7E6F0D-1CE5-46D5-AFED-6A974B45CAD5} = {D1D6CAE9-D15C-4172-8658-55B23B1CD63C}
+		{74DC45F6-41D5-4F8A-AC50-A0C105640378} = {8B8CD357-9AE6-4DB7-B77E-FE8F17724E79}
+		{C97A8A82-00CB-4DEE-A986-D8503B9A158D} = {8B8CD357-9AE6-4DB7-B77E-FE8F17724E79}
 	EndGlobalSection
 EndGlobal

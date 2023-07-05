@@ -10,39 +10,4 @@ using global::Microsoft.Extensions.DependencyInjection;
 #nullable enable
 
 ";
-
-    public static string ArgumentativeFilterAttribute => $@"
-using global::System;
-
-namespace ArgumentativeFilters
-{{
-    /// <summary>
-    /// A method marked with this attribute will have an argumentative filters factory method generated for it.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public class ArgumentativeFilterAttribute : Attribute
-    {{
-    }}
-}}
-";
-
-    public static string IndexOfArgumentAttribute => $@"
-using global::System;
-
-namespace ArgumentativeFilters
-{{
-    /// <summary>
-    /// A method marked with this attribute will contain the index of the provided argument name.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
-    public class IndexOfAttribute : Attribute
-    {{
-        public IndexOfAttribute(string argumentName)
-        {{
-            ArgumentName = argumentName;
-        }}
-
-        public string ArgumentName {{ get; }}
-    }}}}
-";
 }

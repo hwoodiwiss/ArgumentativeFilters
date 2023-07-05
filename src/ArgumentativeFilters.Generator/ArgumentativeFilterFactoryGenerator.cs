@@ -21,14 +21,6 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-            "ArgumentativeFilters.ArgumentativeFilterAttribute.g.cs",
-            SourceText.From(TypeTemplates.ArgumentativeFilterAttribute, Encoding.UTF8)));
-
-        context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-            "ArgumentativeFilters.IndexOfArgumentAttribute.g.cs",
-            SourceText.From(TypeTemplates.IndexOfArgumentAttribute, Encoding.UTF8)));
-
         IncrementalValuesProvider<MethodDeclarationSyntax?> methodDeclarationSyntax = context.SyntaxProvider
             .ForAttributeWithMetadataName(
                 ArgumentativeFiltersAttributeName,
