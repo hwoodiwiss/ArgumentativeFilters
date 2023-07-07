@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyAnalyzerReferenceToPackage</TargetsForTfmSpecificBuildOutput>
+    <BeforePack>$(BeforePack);IncludePackAsAnalyzerProjectReferences;</BeforePack>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
     <CollectCoverage Condition=" '$(CollectCoverage)' == '' ">true</CollectCoverage>
@@ -13,9 +13,30 @@
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-   <Target Name="CopyAnalyzerReferenceToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+
+  <!-- Adapted from https://github.com/ViktorHofer/PackAsAnalyzer/blob/main/src/Sdk/Sdk.targets as including as a reference wouldn't work-->  
+  <Target Name="IncludePackAsAnalyzerProjectReferences"
+          Condition="'@(ProjectReference)' != '' and @(ProjectReference->AnyHaveMetadataValue('PackAsAnalyzer', 'true'))">
+    <MSBuild Projects="@(ProjectReference->WithMetadataValue('PackAsAnalyzer', 'true'))"
+             Targets="GetPackAsAnalyzerFiles">
+      <Output TaskParameter="TargetOutputs" ItemName="PackAsAnalyzerFile" />
+    </MSBuild>
+
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PackAsAnalyzer', 'true'))" TargetPath="analyzers/dotnet/cs" Visible="false" />
+      <Content Include="@(PackAsAnalyzerFile->WithMetadataValue('IsSymbol', ''))"
+               Pack="True" />
+      <_TargetPathsToSymbols Include="@(PackAsAnalyzerFile->WithMetadataValue('IsSymbol', 'true'))"
+                             TargetPath="/%(PackAsAnalyzerFile.PackagePath)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="GetPackAsAnalyzerFiles"
+          DependsOnTargets="$(GenerateNuspecDependsOn)"
+          Returns="@(PackAsAnalyzerFile)">
+    <ItemGroup>
+      <PackAsAnalyzerFile Include="@(_BuildOutputInPackage)" />
+      <PackAsAnalyzerFile Include="@(_TargetPathsToSymbols)" IsSymbol="true" />
+      <PackAsAnalyzerFile PackagePath="analyzers/dotnet/cs/%(TargetPath)" />
     </ItemGroup>
   </Target>
 </Project>

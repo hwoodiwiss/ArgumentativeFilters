@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFramework>$(DefaultClassLibFramework)</TargetFramework>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <IsRoslynComponent>true</IsRoslynComponent>
     <NoWarn>NU5128</NoWarn>
