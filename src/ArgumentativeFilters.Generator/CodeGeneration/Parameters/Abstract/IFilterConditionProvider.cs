@@ -1,4 +1,4 @@
-﻿namespace ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
+﻿namespace ArgumentativeFilters.Generator.CodeGeneration.Parameters.Abstract;
 
 public interface IFilterConditionProvider
 {

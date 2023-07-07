@@ -1,24 +1,25 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
-using ArgumentativeFilters.CodeGeneration.Parameters;
-using ArgumentativeFilters.CodeGeneration.Parameters.Abstract;
 
-namespace ArgumentativeFilters.CodeGeneration;
+using ArgumentativeFilters.Generator.CodeGeneration.Parameters;
+using ArgumentativeFilters.Generator.CodeGeneration.Parameters.Abstract;
+
+namespace ArgumentativeFilters.Generator.CodeGeneration;
 
 public class FilterFactoryBuilder
 {
     const string EndpointFilterFactoryContextType = "global::Microsoft.AspNetCore.Http.EndpointFilterFactoryContext";
 
-    
+
     readonly StringBuilder _builder;
     private readonly string _startingIndentation;
     private readonly string _factoryIndentation;
     private string _filterIndentation;
     private string _conditionalIndentation;
 
-    
+
     private bool _hasCondition = true;
-    
+
     public FilterFactoryBuilder(StringBuilder builder, int startingIndentation)
     {
         _builder = builder;
@@ -38,7 +39,7 @@ public class FilterFactoryBuilder
 
         return this;
     }
-    
+
     public FilterFactoryBuilder AddFactoryCode(IImmutableList<IFactoryCodeProvider> factoryCodeProviders)
     {
         foreach (var factoryCode in factoryCodeProviders.Select(x => x.FactoryCode).Distinct())
@@ -49,7 +50,7 @@ public class FilterFactoryBuilder
 
         return this;
     }
-    
+
     public FilterFactoryBuilder AddFilterConditionCode(IImmutableList<IFilterConditionProvider> filterConditionProviders)
     {
         var distinctConditions = filterConditionProviders.Select(s => s.FilterConditionCode).Where(w => w != string.Empty).Distinct().ToArray();
@@ -62,11 +63,11 @@ public class FilterFactoryBuilder
             _hasCondition = false;
             return this;
         }
-        
+
         _builder.Append(_factoryIndentation);
         _builder.Append($"if (");
-        
-        for(var i = 0; i < distinctConditions.Length; i++)
+
+        for (var i = 0; i < distinctConditions.Length; i++)
         {
             if (i > 0)
             {
@@ -74,14 +75,14 @@ public class FilterFactoryBuilder
             }
             _builder.Append(distinctConditions[i]);
         }
-        
+
         _builder.AppendLine($")");
         _builder.Append(_factoryIndentation);
         _builder.AppendLine("{");
 
         return this;
     }
-    
+
     public FilterFactoryBuilder StartFilterClosure()
     {
         _builder.Append(_conditionalIndentation);
@@ -89,7 +90,7 @@ public class FilterFactoryBuilder
 
         return this;
     }
-    
+
     public FilterFactoryBuilder AddFilterCode(IImmutableList<IFilterCodeProvider> filterCodeProviders)
     {
         foreach (var filterCodeProvider in filterCodeProviders)
@@ -100,13 +101,13 @@ public class FilterFactoryBuilder
 
         return this;
     }
-    
+
     public FilterFactoryBuilder AddFilterCall(string filterName, IImmutableList<ArgumentativeFilterParameterProvider> filterParameterProviders)
     {
         _builder.Append(_filterIndentation);
         _builder.Append($"return {filterName}(");
-        
-        for(var i = 0; i < filterParameterProviders.Count; i++)
+
+        for (var i = 0; i < filterParameterProviders.Count; i++)
         {
             if (i > 0)
             {
@@ -114,12 +115,12 @@ public class FilterFactoryBuilder
             }
             _builder.Append(filterParameterProviders[i].ParameterCode);
         }
-        
+
         _builder.AppendLine(");");
 
         return this;
     }
-    
+
     public FilterFactoryBuilder EndFilterClosure()
     {
         _builder.Append(_conditionalIndentation);
@@ -134,7 +135,7 @@ public class FilterFactoryBuilder
         {
             return this;
         }
-        
+
         _builder.Append(_factoryIndentation);
         _builder.AppendLine("}");
 
@@ -153,14 +154,14 @@ public class FilterFactoryBuilder
 
         return this;
     }
-    
+
     public FilterFactoryBuilder AddGetArgumentIndexMethod()
     {
         _builder.Append(_startingIndentation);
         _builder.AppendLine($"private static int? GetArgumentIndex({EndpointFilterFactoryContextType} context, string argumentName)");
         _builder.Append(_factoryIndentation);
         _builder.AppendLine("=> context.MethodInfo.GetParameters().FirstOrDefault(p => string.Equals(p.Name, argumentName, StringComparison.Ordinal))?.Position;");
-        
+
         return this;
     }
 }

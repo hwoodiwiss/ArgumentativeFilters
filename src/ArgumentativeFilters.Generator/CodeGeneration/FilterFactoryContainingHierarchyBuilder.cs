@@ -1,76 +1,76 @@
 ﻿using System.Text;
-using ArgumentativeFilters.CodeGeneration.Extensions;
 
-namespace ArgumentativeFilters.CodeGeneration;
+using ArgumentativeFilters.Generator.CodeGeneration.Extensions;
+
+namespace ArgumentativeFilters.Generator.CodeGeneration;
 
 public class FilterFactoryContainingHierarchyBuilder
 {
-    private int _currentIndentationLevel;
     private int _hierarchyLevelCount = 0;
     private readonly Dictionary<int, string> _indentationCache = new();
     private readonly StringBuilder _builder;
-    
-    public int CurrentIndentationLevel => _currentIndentationLevel;
-    
+
+    public int CurrentIndentationLevel { get; private set; }
+
     public FilterFactoryContainingHierarchyBuilder(StringBuilder builder)
     {
         _builder = builder;
-        _currentIndentationLevel = 0;
+        CurrentIndentationLevel = 0;
     }
 
     public FilterFactoryContainingHierarchyBuilder AddContainingHierarchy(IEnumerable<INamedTypeSymbol> containingClassSymbols, string containingNamespace)
     {
         AddContainingNamespace(containingNamespace);
-        
-        foreach(var containingClassSymbol in containingClassSymbols)
+
+        foreach (var containingClassSymbol in containingClassSymbols)
         {
             AddContainingClass(containingClassSymbol);
         }
-        
+
         return this;
     }
-    
+
     private FilterFactoryContainingHierarchyBuilder AddContainingNamespace(string containingNamespace)
     {
         _builder.AppendLine($"namespace {containingNamespace}");
         _builder.AppendLine("{");
-        _currentIndentationLevel += Constants.IndentationPerLevel;
+        CurrentIndentationLevel += Constants.IndentationPerLevel;
         return this;
     }
 
     private FilterFactoryContainingHierarchyBuilder AddContainingClass(INamedTypeSymbol containingClassSymbol)
     {
         _hierarchyLevelCount++;
-        
-        var indentation = GetOrCreateIndentationLevel(_currentIndentationLevel);
+
+        var indentation = GetOrCreateIndentationLevel(CurrentIndentationLevel);
         var containingClassAccessibility = containingClassSymbol.GetAccessibilityString();
-        
+
         var containingTypeStatic = containingClassSymbol.IsStatic ? "static " : string.Empty;
-        
+
         var containingTypeKind = containingClassSymbol.TypeKind switch
         {
             TypeKind.Class => "class",
             TypeKind.Struct => "struct",
             _ => throw new InvalidOperationException("Filter must be declared in a class or struct.")
         };
-        
+
         var containingClassName = containingClassSymbol.Name;
-        
+
         _builder.AppendLine($"{indentation}{containingClassAccessibility} {containingTypeStatic}partial {containingTypeKind} {containingClassName}");
         _builder.AppendLine($"{indentation}{{");
-        
-        _currentIndentationLevel += Constants.IndentationPerLevel;
+
+        CurrentIndentationLevel += Constants.IndentationPerLevel;
         return this;
     }
-    
+
     public FilterFactoryContainingHierarchyBuilder CloseContainingHierarchy()
     {
-        for(var i = 1; i < _hierarchyLevelCount + 1; i++)
+        for (var i = 1; i < _hierarchyLevelCount + 1; i++)
         {
-            var indentation = GetOrCreateIndentationLevel(_currentIndentationLevel - (i * Constants.IndentationPerLevel));
+            var indentation = GetOrCreateIndentationLevel(CurrentIndentationLevel - i * Constants.IndentationPerLevel);
             _builder.AppendLine($"{indentation}}}");
         }
-        
+
         // Close containing namespace
         _builder.AppendLine("}");
 
@@ -88,7 +88,7 @@ public class FilterFactoryContainingHierarchyBuilder
         _indentationCache.Add(indentationLevel, indentationString);
         return indentationString;
     }
-    
+
     public string Build()
     {
         return _builder.ToString();

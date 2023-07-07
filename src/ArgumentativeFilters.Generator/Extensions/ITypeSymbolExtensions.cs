@@ -1,4 +1,4 @@
-﻿namespace ArgumentativeFilters.Extensions;
+﻿namespace ArgumentativeFilters.Generator.Extensions;
 
 public static class ITypeSymbolExtensions
 {
@@ -13,11 +13,11 @@ public static class ITypeSymbolExtensions
             _ => GetTypeNameWithStrippedNullability(typeSymbol),
         };
     }
-    
-    private static string GetValueTypeName(ITypeSymbol typeSymbol) 
+
+    private static string GetValueTypeName(ITypeSymbol typeSymbol)
         => $"global::System.Nullable<{GetTypeNameWithStrippedNullability(typeSymbol)}>";
-    
-    private static string GetGloballyQualifiedTypeName(ITypeSymbol typeSymbol) 
+
+    private static string GetGloballyQualifiedTypeName(ITypeSymbol typeSymbol)
         => $"global::{GetTypeNameWithStrippedNullability(typeSymbol)}";
 
     private static string GetTypeNameWithStrippedNullability(ITypeSymbol typeSymbol) =>

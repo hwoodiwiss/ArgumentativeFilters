@@ -1,4 +1,4 @@
-﻿namespace ArgumentativeFilters.CodeGeneration;
+﻿namespace ArgumentativeFilters.Generator.CodeGeneration;
 
 public static class VariableNames
 {
