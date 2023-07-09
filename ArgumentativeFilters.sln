@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMinimalApi", "exampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentativeFilters.Generator", "src\ArgumentativeFilters.Generator\ArgumentativeFilters.Generator.csproj", "{C97A8A82-00CB-4DEE-A986-D8503B9A158D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{313FDE40-F228-4BDA-A8FA-E27780961940}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{313FDE40-F228-4BDA-A8FA-E27780961940}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{634FBCAE-C3C0-4C55-8CCA-6BCCB960CDD6}"
 	ProjectSection(SolutionItems) = preProject
