@@ -15,7 +15,7 @@ public class IndexArgumentFilterParameter : ArgumentativeFilterParameterProvider
     }
 
 
-    public string FactoryCode => $"int? {_argumentName}{IndexNameSuffix} = GetArgumentIndex({VariableNames.FactoryFilterContext}, \"{_argumentName}\");";
+    public string FactoryCode => $"int? {_argumentName}{IndexNameSuffix} = global::ArgumentativeFilters.ArgumentativeFiltersParameterHelpers.GetArgumentIndex({VariableNames.FactoryFilterContext}, \"{_argumentName}\", StringComparison.Ordinal);";
 
     public string FilterConditionCode => _required ? $"{_argumentName}{IndexNameSuffix}.HasValue" : string.Empty;
 

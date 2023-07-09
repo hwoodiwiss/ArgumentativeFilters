@@ -154,14 +154,4 @@ public class FilterFactoryBuilder
 
         return this;
     }
-
-    public FilterFactoryBuilder AddGetArgumentIndexMethod()
-    {
-        _builder.Append(_startingIndentation);
-        _builder.AppendLine($"private static int? GetArgumentIndex({EndpointFilterFactoryContextType} context, string argumentName)");
-        _builder.Append(_factoryIndentation);
-        _builder.AppendLine("=> context.MethodInfo.GetParameters().FirstOrDefault(p => string.Equals(p.Name, argumentName, StringComparison.Ordinal))?.Position;");
-
-        return this;
-    }
 }

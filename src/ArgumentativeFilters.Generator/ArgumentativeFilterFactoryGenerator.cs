@@ -76,7 +76,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
 
         StringBuilder sb = new();
 
-        sb.Append(TypeTemplates.ArgumentativeFilterConstantHeader);
+        sb.Append(CodeSnippets.ArgumentativeFilterFileHeader);
         Stopwatch codegenTimer = new();
 
         if (debugOutputEnabled)
@@ -87,11 +87,10 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
         foreach (var filter in methods)
         {
             GenerateFilterFactory(compilation, filter, sb);
-            if (filter != methods.Last())
-            {
-                sb.AppendLine();
-            }
+            sb.AppendLine();
         }
+
+        sb.AppendLine(ConstantTypeCode.ArgumentativeFiltersParameterHelpers);
 
         var sourceText = SourceText.From(sb.ToString(), Encoding.UTF8);
         if (debugOutputEnabled)
@@ -149,8 +148,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
             .AddFilterCall(filter.Identifier.Text, parameters.ToImmutableArray())
             .EndFilterClosure()
             .EndFilterCondition()
-            .EndFilterFactory()
-            .AddGetArgumentIndexMethod();
+            .EndFilterFactory();
 
         hierarchyBuilder.CloseContainingHierarchy();
     }
