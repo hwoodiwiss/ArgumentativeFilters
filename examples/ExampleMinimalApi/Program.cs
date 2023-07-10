@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/country/{country}", (string country) => country)
+app.MapGet("/country/{country}/{id}", (string country, int id) => Results.Json(new { id, country }))
     .AddEndpointFilterFactory(ExampleFilter.Factory);
 
 app.Run();

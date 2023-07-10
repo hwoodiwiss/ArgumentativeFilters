@@ -3,7 +3,7 @@ using ArgumentativeFilters.Generator.Extensions;
 
 namespace ArgumentativeFilters.Generator.CodeGeneration.Parameters;
 
-public sealed class ValueArgumentFilterParameter : IndexArgumentFilterParameter, IFilterCodeProvider
+public class ValueArgumentFilterParameter : IndexArgumentFilterParameter, IFilterCodeProvider
 {
     private readonly ITypeSymbol _argumentType;
     private const string ValueNameSuffix = "Value";

@@ -9,13 +9,19 @@ namespace ExampleMinimalApi;
 public static partial class ExampleFilter
 {
     [ArgumentativeFilter]
-    private static ValueTask<object?> NormalizeRouteStringsFilter(
+    private static ValueTask<object?> NormalizeRouteStringsFilterRef(
         EndpointFilterInvocationContext context,
         EndpointFilterDelegate next,
-        string country,
+        ref string country,
+        ref int id,
         [IndexOf(nameof(country))] int countryIndex,
         [FromServices] IConfiguration? configuration)
     {
+        if (id < 0)
+        {
+            return ValueTask.FromResult<object?>(Results.BadRequest("id must be positive"));
+        }
+        
         context.Arguments[countryIndex] = country.ToUpperInvariant();
         return next(context);
     }

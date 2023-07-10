@@ -1,6 +1,7 @@
 ﻿using ArgumentativeFilters.Generator.CodeGeneration.Parameters;
 using ArgumentativeFilters.Generator.Extensions;
 
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ArgumentativeFilters.Generator.Parsing;
@@ -16,7 +17,7 @@ public static class ParameterCodeProviderFactory
     {
         var semanticModel = compilation.GetSemanticModel(parameterSyntax.SyntaxTree);
 
-        if (semanticModel.GetDeclaredSymbol(parameterSyntax) is not IParameterSymbol parameterSymbol)
+        if (ModelExtensions.GetDeclaredSymbol(semanticModel, parameterSyntax) is not IParameterSymbol parameterSymbol)
         {
             throw new ApplicationException("failed");
         }
@@ -38,13 +39,16 @@ public static class ParameterCodeProviderFactory
             {
                 return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.", parameterSymbol.IsParameterRequired());
             }
-
+            
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
             {
                 return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), parameterSymbol.IsServiceRequired());
             }
         }
 
-        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired());
+        bool isRef = parameterSyntax.Modifiers.Any(x => x.IsKind(SyntaxKind.RefKeyword));
+        return isRef 
+            ? new RefValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired())
+            : new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired());
     }
 }
