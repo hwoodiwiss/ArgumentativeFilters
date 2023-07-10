@@ -22,7 +22,7 @@ public abstract class ArgumentativeFilterTests : IDisposable
     public ArgumentativeFilterTestContext Context 
     {
         get => _context 
-             ?? throw new InvalidOperationException("Attempted to use uninitialized test context. Call Initialize on the test before attempting to get the Context"); 
+             ?? throw new InvalidOperationException("Attempted to use uninitialized test context. Call SetupContext on the test before attempting to get the Context"); 
     }
 
     [MemberNotNull(nameof(_context))]
@@ -41,7 +41,7 @@ public abstract class ArgumentativeFilterTests : IDisposable
         HttpContext httpContext = new DefaultHttpContext { RequestServices = _serviceScope.ServiceProvider };
         DefaultEndpointFilterInvocationContext invocationContext = new (
             httpContext,
-            argumentValues);
+            argumentValues.ToArray()!);
 
         _context = new()
         {
