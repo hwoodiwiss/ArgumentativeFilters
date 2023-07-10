@@ -46,9 +46,9 @@ public static class ParameterCodeProviderFactory
             }
         }
 
-        bool isRef = parameterSyntax.Modifiers.Any(x => x.IsKind(SyntaxKind.RefKeyword));
+        bool isRef = parameterSymbol.RefKind != RefKind.None;
         return isRef 
-            ? new RefValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired())
+            ? new RefValueArgumentFilterParameter(parameterSymbol.RefKind, parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired())
             : new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired());
     }
 }
