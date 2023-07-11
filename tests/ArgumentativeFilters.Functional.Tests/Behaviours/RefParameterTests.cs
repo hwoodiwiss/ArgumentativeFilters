@@ -37,22 +37,6 @@ public partial class RefParameterTests : ArgumentativeFilterTests
             },
             new List<object?> { 0 });
     }    
-    
-    [Fact]
-    public async Task OutParameterFilter_WhenParameterDoesNotExists_AndRefParamIsNotNullable_CausesFilterFallback()
-    {
-        await TestFilterFactoryBehaviour<OutParameterFilter>(
-            (int test) => test,
-            async (context, filter, _) =>
-            {
-                // Act
-                var result = await filter(context.InvocationContext);
-
-                // Assert
-                result.ShouldBe(FilterRunResult);
-            },
-            new List<object?> { 0 });
-    }
 
     public partial class RefParameterFilter : IFilterFactory
     {
@@ -68,17 +52,6 @@ public partial class RefParameterTests : ArgumentativeFilterTests
         [ArgumentativeFilter]
         public static ValueTask<object?> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, in int test)
         {
-            return ValueTask.FromResult<object?>(FilterRunResult);
-        }
-    }
-    
-    // Not sure why you would, but...
-    public partial class OutParameterFilter : IFilterFactory
-    {
-        [ArgumentativeFilter]
-        public static ValueTask<object?> TestFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next, out int test)
-        {
-            test = int.MaxValue;
             return ValueTask.FromResult<object?>(FilterRunResult);
         }
     }

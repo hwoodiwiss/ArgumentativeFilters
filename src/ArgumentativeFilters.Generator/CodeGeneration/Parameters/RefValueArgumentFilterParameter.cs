@@ -22,7 +22,6 @@ public sealed class RefValueArgumentFilterParameter : ValueArgumentFilterParamet
     private string GetRefParameterPrefix() 
         => _refKind switch
         {
-            RefKind.Out => "out ",
             RefKind.Ref => "ref ",
             RefKind.In => "in ",
             _ => string.Empty
