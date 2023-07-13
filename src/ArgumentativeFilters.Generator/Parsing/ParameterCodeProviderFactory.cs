@@ -1,6 +1,7 @@
 ﻿using ArgumentativeFilters.Generator.CodeGeneration.Parameters;
 using ArgumentativeFilters.Generator.Extensions;
 
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ArgumentativeFilters.Generator.Parsing;
@@ -16,7 +17,7 @@ public static class ParameterCodeProviderFactory
     {
         var semanticModel = compilation.GetSemanticModel(parameterSyntax.SyntaxTree);
 
-        if (semanticModel.GetDeclaredSymbol(parameterSyntax) is not IParameterSymbol parameterSymbol)
+        if (ModelExtensions.GetDeclaredSymbol(semanticModel, parameterSyntax) is not IParameterSymbol parameterSymbol)
         {
             throw new ApplicationException("failed");
         }
@@ -45,6 +46,9 @@ public static class ParameterCodeProviderFactory
             }
         }
 
-        return new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired());
+        bool isRef = parameterSymbol.RefKind != RefKind.None;
+        return isRef 
+            ? new RefValueArgumentFilterParameter(parameterSymbol.RefKind, parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired())
+            : new ValueArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type!, parameterSymbol.IsParameterRequired());
     }
 }
