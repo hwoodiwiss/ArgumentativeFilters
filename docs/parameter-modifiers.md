@@ -29,3 +29,10 @@ When a parameter has this attribute, the generated factory will attempt to resol
 > *Note :notebook:*
 > - In nullable reference type contexts if the parameter is marked as nullable, `IServiceProvider.GetService` is used, otherwise `IServiceProvider.GetRequiredService` is used, and the factory will throw if the service cannot be resolved.
 > - In contexts where nullable reference types are not enabled `IServiceProvider.GetRequiredService` will be used unless the parameter is _optional_.
+
+## Ref parameters
+
+`in` and `ref` parameter types are supported. Due to how endpoint parameters are stored internally in `EndpointFilterInvocationContext.Arguments`, unboxing will still occur
+in the generated filter factory.
+
+The `out` parameter type has been purposely avoided as there is no reason that values should be added to the scope of the generated code.
