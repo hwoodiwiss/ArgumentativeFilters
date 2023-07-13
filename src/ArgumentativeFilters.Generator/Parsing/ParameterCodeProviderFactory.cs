@@ -39,7 +39,7 @@ public static class ParameterCodeProviderFactory
             {
                 return new IndexArgumentFilterParameter(attributeSymbol.ConstructorArguments.FirstOrDefault().Value as string ?? "Invalid IndexOfAttribute parameter.", parameterSymbol.IsParameterRequired());
             }
-            
+
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
             {
                 return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), parameterSymbol.IsServiceRequired());
