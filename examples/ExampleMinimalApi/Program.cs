@@ -36,4 +36,7 @@ app.MapGet("/country/{country}/{id}", (string country, int id) => Results.Json(n
 
 app.Run();
 
-
+// Required for integration tests
+public partial class Program
+{
+}
