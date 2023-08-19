@@ -17,7 +17,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddOptions();
 builder.Services.Configure<ExampleMinimalApiOptions>(builder.Configuration);
+
+#if NET8_0_OR_GREATER
+builder.Services.AddKeyedScoped<ValidateIdFilter>(ValidateIdFilters.ValidateId);
+#else
 builder.Services.AddScoped<ValidateIdFilter>();
+#endif
 
 var app = builder.Build();
 

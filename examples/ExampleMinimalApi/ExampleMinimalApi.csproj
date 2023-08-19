@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <AnalysisMode>Recommended</AnalysisMode>
-    <TargetFramework>$(DefaultWebApiFramework)</TargetFramework>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
@@ -17,5 +17,14 @@
   </PropertyGroup>
   <ItemGroup>
     <CompilerVisibleProperty Include="ArgumentativeFilters_WriteDebug" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="**\ValidateIdFilter.*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
+    <Compile Include=".\Filters\ValidateIdFilter.net7.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
+    <Compile Include=".\Filters\ValidateIdFilter.net8.cs" />
   </ItemGroup>
 </Project>
