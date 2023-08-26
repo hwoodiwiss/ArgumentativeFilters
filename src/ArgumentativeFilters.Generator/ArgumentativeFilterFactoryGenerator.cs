@@ -54,7 +54,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
                 INamedTypeSymbol attributeContainingTypeSymbol = attributeSymbol.ContainingType;
                 string fullName = attributeContainingTypeSymbol.ToDisplayString();
 
-                if (fullName == "ArgumentativeFilters.ArgumentativeFilterAttribute")
+                if (fullName == ArgumentativeFiltersAttributeName)
                 {
                     return methodDeclarationSyntax;
                 }
