@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
-
 using ArgumentativeFilters.Generator.CodeGeneration.Parameters;
 using ArgumentativeFilters.Generator.CodeGeneration.Parameters.Abstract;
 

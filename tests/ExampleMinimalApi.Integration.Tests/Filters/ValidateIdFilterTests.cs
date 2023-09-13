@@ -23,6 +23,7 @@ public class ValidateIdFilterTests : IClassFixture<ExampleMinimalApiFixture>
         var response = await _client.GetAsync(new Uri($"country/spain/{validId}", UriKind.Relative));
 
         // Assert
+        var resptext = await response.Content.ReadAsStringAsync();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var exampleResponse = await response.Content.ReadFromJsonAsync<ExampleResponse>();
         exampleResponse.ShouldNotBeNull();

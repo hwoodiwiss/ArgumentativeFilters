@@ -42,7 +42,12 @@ public static class ParameterCodeProviderFactory
 
             if (fullName == "Microsoft.AspNetCore.Mvc.FromServicesAttribute")
             {
-                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), parameterSymbol.IsServiceRequired());
+                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), parameterSymbol.IsServiceRequired(), null);
+            }
+            
+            if (fullName == "Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute")
+            {
+                return new ServiceArgumentFilterParameter(parameterSyntax.Identifier.Text, parameterSymbol.Type.GetFullyQualifiedTypeName(), parameterSymbol.IsServiceRequired(), attributeSymbol.ConstructorArguments.FirstOrDefault().ToCSharpString());
             }
         }
 
