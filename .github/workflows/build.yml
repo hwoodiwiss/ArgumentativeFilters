@@ -41,6 +41,24 @@ jobs:
           name: packages
           path: ./artifacts/package/release
 
+  build-aot:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+
+      - name: Publish Example AOT
+        run: dotnet publish .\examples\ExampleMinimalApi\ExampleMinimalApi.csproj -r win-x64 -c Release --framework net8.0 /tl
+
+      - name: Publish AOT Compiled Example
+        uses: actions/upload-artifact@v3
+        with:
+          name: ExampleMinimalApi-AOT
+          path: ./artifacts/bin/ExampleMinimalApi/release_net8.0_win-x64/native
+
   publish-github:
     runs-on: ubuntu-latest
     needs: build

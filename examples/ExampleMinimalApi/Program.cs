@@ -8,7 +8,11 @@ using Microsoft.Extensions.Hosting;
 
 #pragma warning disable CA1852
 
+#if NET8_0_OR_GREATER
+var builder = WebApplication.CreateSlimBuilder(args);
+#else
 var builder = WebApplication.CreateBuilder(args);
+#endif
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -19,6 +23,10 @@ builder.Services.AddOptions();
 builder.Services.Configure<ExampleMinimalApiOptions>(builder.Configuration);
 
 #if NET8_0_OR_GREATER
+builder.Services.ConfigureHttpJsonOptions(opt =>
+{
+    opt.SerializerOptions.TypeInfoResolverChain.Insert(0, ApplicationJsonContext.Default);
+});
 builder.Services.AddKeyedScoped<ValidateIdFilter>(ValidateIdFilters.ValidateId);
 #else
 builder.Services.AddScoped<ValidateIdFilter>();
@@ -33,9 +41,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
-app.MapGet("/country/{country}/{id}", (string country, int id) => Results.Json(new { id, country }))
+
+app.MapGet("/country/{country}/{id}", (string country, int id) => new CountryDto(id, country))
     .AddEndpointFilterFactory(NormalizeRouteCountryFilter.Factory)
     .AddEndpointFilterFactory(ValidateIdFilter.Factory);
 
