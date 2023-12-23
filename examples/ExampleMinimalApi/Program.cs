@@ -23,6 +23,10 @@ builder.Services.AddOptions();
 builder.Services.Configure<ExampleMinimalApiOptions>(builder.Configuration);
 
 #if NET8_0_OR_GREATER
+builder.Services.ConfigureHttpJsonOptions(opt =>
+{
+    opt.SerializerOptions.TypeInfoResolverChain.Insert(0, ApplicationJsonContext.Default);
+});
 builder.Services.AddKeyedScoped<ValidateIdFilter>(ValidateIdFilters.ValidateId);
 #else
 builder.Services.AddScoped<ValidateIdFilter>();
@@ -40,7 +44,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/country/{country}/{id}", (string country, int id) => Results.Json(new { id, country }))
+
+app.MapGet("/country/{country}/{id}", (string country, int id) => new CountryDto(id, country))
     .AddEndpointFilterFactory(NormalizeRouteCountryFilter.Factory)
     .AddEndpointFilterFactory(ValidateIdFilter.Factory);
 
