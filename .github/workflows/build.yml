@@ -51,7 +51,7 @@ jobs:
         uses: actions/setup-dotnet@v3
 
       - name: Publish Example AOT
-        run: dotnet publish .\examples\ExampleMinimalApi\ExampleMinimalApi.csproj /p:PublishAot=true -r win-x64 -c Release --framework net8.0 /tl
+        run: dotnet publish .\examples\ExampleMinimalApi\ExampleMinimalApi.csproj -r win-x64 -c Release --framework net8.0 /tl
 
       - name: Publish AOT Compiled Example
         uses: actions/upload-artifact@v3
