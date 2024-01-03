@@ -2,8 +2,10 @@
   <PropertyGroup>
     <TargetFramework>$(DefaultClassLibFramework)</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <IncludeSymbols>true</IncludeSymbols>
     <Nullable>enable</Nullable>
     <IsAotCompatible>true</IsAotCompatible>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
