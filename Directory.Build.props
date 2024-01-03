@@ -1,34 +1,43 @@
 <Project>
   <PropertyGroup>
     <AnalysisMode>All</AnalysisMode>
-    <Authors>Hugo Woodiwiss</Authors>
-    <Copyright>Copyright (c) Hugo Woodiwiss 2023-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <DebugType>portable</DebugType>
     <DefaultClassLibFramework>netstandard2.0</DefaultClassLibFramework>
     <DefaultGeneroratorConsumerFrameworks>net7.0;net8.0</DefaultGeneroratorConsumerFrameworks>
     <Deterministic>true</Deterministic>
-    <Description>A source generator to make convenient Minimal API filter factories</Description>
-    <EnablePackageValidation>true</EnablePackageValidation>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+  </PropertyGroup>
+  
+  <PropertyGroup Label="Package Items">
+    <Authors>Hugo Woodiwiss</Authors>
+    <Copyright>Copyright (c) Hugo Woodiwiss 2023-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <Description>A source generator to make convenient Minimal API filter factories</Description>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/hwoodiwiss/ArgumentativeFilters</PackageProjectUrl>
     <PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <UseArtifactsOutput>true</UseArtifactsOutput>
   </PropertyGroup>
+  
   <PropertyGroup>
     <MinVerDefaultPreReleaseIdentifiers>preview</MinVerDefaultPreReleaseIdentifiers>
     <MinVerIgnoreHeight>true</MinVerIgnoreHeight>
     <MinVerSkip Condition=" '$(Configuration)' == 'Debug' ">true</MinVerSkip>
     <MinVerTagPrefix>v</MinVerTagPrefix>
   </PropertyGroup>
+  
   <ItemGroup Condition=" '$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath="\"/>
     <None Include="$(MSBuildThisFileDirectory)\LICENSE" Pack="true" PackagePath="\"/>
     <PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
   </ItemGroup>
 </Project>

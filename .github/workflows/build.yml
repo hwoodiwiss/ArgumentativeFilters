@@ -34,6 +34,22 @@ jobs:
       - name: Run Build Script
         shell: pwsh
         run: ./build.ps1
+        
+      - name: Validate Packages
+        shell: pwsh
+        run: | 
+          dotnet tool restore
+          $packages = Get-ChildItem -Path ./artifacts/package/release -Filter *.nupkg -Recurse
+          foreach ($package in $packages) {
+              $result = dotnet validate package local $package.FullName
+              if ($LASTEXITCODE -ne 0) {
+                  Write-Error "Package validation failed for $($package.FullName)"
+                  Foreach($line in $result) {
+                      Write-Error $line
+                  }
+                  return $LASTEXITCODE
+              }
+          }
 
       - name: Publish Workflow Artifacts
         uses: actions/upload-artifact@v3
