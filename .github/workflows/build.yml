@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
 
       - name: Run Build Script
         shell: pwsh
@@ -64,7 +64,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
 
       - name: Publish Example AOT
         run: dotnet publish .\examples\ExampleMinimalApi\ExampleMinimalApi.csproj -r win-x64 -c Release --framework net8.0 /tl
@@ -91,7 +91,7 @@ jobs:
           name: packages
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
 
       - name: Publish Preview to Github Feed
         run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate --no-symbols --source https://nuget.pkg.github.com/hwoodiwiss/index.json
@@ -109,7 +109,7 @@ jobs:
           name: packages
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
 
       - name: Push NuGet packages to NuGet.org
         run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json
