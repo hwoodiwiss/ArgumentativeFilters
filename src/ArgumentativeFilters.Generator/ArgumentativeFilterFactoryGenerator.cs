@@ -140,6 +140,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
 
         FilterFactoryBuilder builder = new(sb, hierarchyBuilder.CurrentIndentationLevel);
         builder
+            .AddGeneratedCodeAttribute()
             .AddFilterFactorySignature(containingClass.GetAccessibilityString())
             .AddFactoryCode(parameters.OfType<IFactoryCodeProvider>().ToImmutableArray())
             .AddFilterConditionCode(parameters.OfType<IFilterConditionProvider>().ToImmutableArray())

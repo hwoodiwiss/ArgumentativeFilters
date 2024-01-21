@@ -2,12 +2,13 @@
 
 public static class ConstantTypeCode
 {
-    public static string ArgumentativeFiltersParameterHelpers => """
+    public static string ArgumentativeFiltersParameterHelpers => $$"""
 namespace ArgumentativeFilters
 {
     /// <summary>
     /// A static class containing helper utilities used by ArgumentativeFilters
     /// </summary>
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("{{AssemblyMetadata.Name}}", "{{AssemblyMetadata.Version}}")]
     public static class ArgumentativeFiltersParameterHelpers
     {
         /// <summary>
