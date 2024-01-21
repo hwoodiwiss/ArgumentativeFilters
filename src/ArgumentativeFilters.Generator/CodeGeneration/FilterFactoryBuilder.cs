@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
+
 using ArgumentativeFilters.Generator.CodeGeneration.Parameters;
 using ArgumentativeFilters.Generator.CodeGeneration.Parameters.Abstract;
 
@@ -27,6 +28,13 @@ public class FilterFactoryBuilder
         _factoryIndentation = new string(' ', startingIndentation + Constants.IndentationPerLevel);
         _conditionalIndentation = new string(' ', startingIndentation + Constants.IndentationPerLevel + Constants.IndentationPerLevel);
         _filterIndentation = new string(' ', startingIndentation + Constants.IndentationPerLevel + Constants.IndentationPerLevel + Constants.IndentationPerLevel);
+    }
+
+    public FilterFactoryBuilder AddGeneratedCodeAttribute()
+    {
+        _builder.AppendLine($"{_startingIndentation}[global::System.CodeDom.Compiler.GeneratedCodeAttribute(\"{AssemblyMetadata.Name}\", \"{AssemblyMetadata.Version}\")]");
+
+        return this;
     }
 
     public FilterFactoryBuilder AddFilterFactorySignature(string filterClassAccessibility)
