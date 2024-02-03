@@ -7,4 +7,8 @@ namespace ArgumentativeFilters;
 [AttributeUsage(AttributeTargets.Method, Inherited = false)]
 public sealed class ArgumentativeFilterAttribute : Attribute
 {
+    /// <summary>
+    /// If set, the generated factory method name be prefixed with this value.
+    /// </summary>
+    public string? Prefix { get; set; }
 }

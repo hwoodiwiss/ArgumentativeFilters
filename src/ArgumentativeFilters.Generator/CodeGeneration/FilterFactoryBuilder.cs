@@ -37,10 +37,10 @@ public class FilterFactoryBuilder
         return this;
     }
 
-    public FilterFactoryBuilder AddFilterFactorySignature(string filterClassAccessibility)
+    public FilterFactoryBuilder AddFilterFactorySignature(string filterClassAccessibility, string? factoryNamePrefix)
     {
         string endpointFilterDelegateType = "global::Microsoft.AspNetCore.Http.EndpointFilterDelegate";
-        _builder.AppendLine($"{_startingIndentation}{filterClassAccessibility} static {endpointFilterDelegateType} Factory({EndpointFilterFactoryContextType} {VariableNames.FactoryFilterContext}," +
+        _builder.AppendLine($"{_startingIndentation}{filterClassAccessibility} static {endpointFilterDelegateType} {factoryNamePrefix}Factory({EndpointFilterFactoryContextType} {VariableNames.FactoryFilterContext}," +
                             $" {endpointFilterDelegateType} {VariableNames.EndpointFilterDelegate})");
         _builder.AppendLine($"{_startingIndentation}{{");
 
