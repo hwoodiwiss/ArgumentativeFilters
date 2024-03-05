@@ -47,7 +47,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/country/{country}/{id}", (string country, int id) => new CountryDto(id, country))
     .AddEndpointFilterFactory(NormalizeRouteCountryFilter.Factory)
-    .AddEndpointFilterFactory(ValidateIdFilter.Factory);
+    .AddEndpointFilterFactory(ValidateIdFilter.ValidateIdFactory);
 
 app.Run();
 

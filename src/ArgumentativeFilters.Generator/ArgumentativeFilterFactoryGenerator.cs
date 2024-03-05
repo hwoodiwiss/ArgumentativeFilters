@@ -5,6 +5,7 @@ using System.Text;
 using ArgumentativeFilters.Generator.CodeGeneration;
 using ArgumentativeFilters.Generator.CodeGeneration.Extensions;
 using ArgumentativeFilters.Generator.CodeGeneration.Parameters.Abstract;
+using ArgumentativeFilters.Generator.Extensions;
 using ArgumentativeFilters.Generator.Parsing;
 
 using Microsoft.CodeAnalysis.CSharp;
@@ -46,7 +47,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
         {
             foreach (var attribute in attributeList.Attributes)
             {
-                if (ModelExtensions.GetSymbolInfo(context.SemanticModel, attribute).Symbol is not IMethodSymbol attributeSymbol)
+                if (context.SemanticModel.GetSymbolInfo(attribute).Symbol is not IMethodSymbol attributeSymbol)
                 {
                     continue;
                 }
@@ -110,12 +111,14 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
     {
         var semanticModel = compilation.GetSemanticModel(filter.SyntaxTree);
         var filterMethodSymbol = semanticModel.GetDeclaredSymbol(filter);
-
+        
         if (filterMethodSymbol is null)
         {
             return;
         }
 
+        var factoryNamePrefix = filterMethodSymbol.GetAttributeNamedParameterValue(ArgumentativeFiltersAttributeName, "Prefix");
+        
         var containingNamespace = filterMethodSymbol.ContainingNamespace.ToDisplayString();
 
         var containingClassSyntax = filter.Parent switch
@@ -141,7 +144,7 @@ public class ArgumentativeFilterFactoryGenerator : IIncrementalGenerator
         FilterFactoryBuilder builder = new(sb, hierarchyBuilder.CurrentIndentationLevel);
         builder
             .AddGeneratedCodeAttribute()
-            .AddFilterFactorySignature(containingClass.GetAccessibilityString())
+            .AddFilterFactorySignature(containingClass.GetAccessibilityString(), factoryNamePrefix)
             .AddFactoryCode(parameters.OfType<IFactoryCodeProvider>().ToImmutableArray())
             .AddFilterConditionCode(parameters.OfType<IFilterConditionProvider>().ToImmutableArray())
             .StartFilterClosure()
