@@ -85,10 +85,11 @@ public partial class IndexOfAttributeTests : ArgumentativeFilterTests
         }
     }
 
-    public static IEnumerable<object[]> EndpointDelegatesWithExpectedParamIndex() => new[]
-    {
-        new object[] {(string expectedParam, string someParam) => string.Empty, 0},
-        new object[] {(string someParam, string expectedParam) => string.Empty, 1},
-        new object[] {(string someParam, string anotherParam, string aFurtherParam, string anotherOne, string expectedParam) => string.Empty, 4},
-    };
+    public static TheoryData<Delegate, int> EndpointDelegatesWithExpectedParamIndex() =>
+        new()
+        {
+            {(string expectedParam, string someParam) => string.Empty, 0},
+            {(string someParam, string expectedParam) => string.Empty, 1},
+            {(string someParam, string anotherParam, string aFurtherParam, string anotherOne, string expectedParam) => string.Empty, 4},
+        };
 }
