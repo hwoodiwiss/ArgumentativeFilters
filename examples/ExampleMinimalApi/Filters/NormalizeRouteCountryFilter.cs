@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace ExampleMinimalApi.Filters;
 
-public static partial class NormalizeRouteCountryFilter
+internal static partial class NormalizeRouteCountryFilter
 {
     [ArgumentativeFilter]
     private static ValueTask<object?> Filter(

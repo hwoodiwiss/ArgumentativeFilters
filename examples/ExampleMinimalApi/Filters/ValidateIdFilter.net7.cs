@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace ExampleMinimalApi.Filters;
 
-public sealed partial class ValidateIdFilter
+internal sealed partial class ValidateIdFilter
 {
     private readonly ExampleMinimalApiOptions _options;
 
@@ -16,8 +16,8 @@ public sealed partial class ValidateIdFilter
     {
         _options = options.Value;
     }
-    
-    public ValueTask<object?> ValidateId(EndpointFilterInvocationContext context, EndpointFilterDelegate next, ref int id) 
+
+    public ValueTask<object?> ValidateId(EndpointFilterInvocationContext context, EndpointFilterDelegate next, ref int id)
     {
         if (id < _options.MinimumAllowedId)
         {
@@ -26,7 +26,7 @@ public sealed partial class ValidateIdFilter
 
         return next(context);
     }
-    
+
     [ArgumentativeFilter(Prefix = nameof(ValidateId))]
     private static ValueTask<object?> ValidateId(
         EndpointFilterInvocationContext context,

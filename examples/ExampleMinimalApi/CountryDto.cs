@@ -1,3 +1,3 @@
 ﻿namespace ExampleMinimalApi;
 
-public sealed record CountryDto(int Id, string Country);
+internal sealed record CountryDto(int Id, string Country);
