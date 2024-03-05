@@ -32,7 +32,7 @@ public sealed partial class ValidateIdFilter
         return next(context);
     }
     
-    [ArgumentativeFilter]
+    [ArgumentativeFilter(Prefix = nameof(ValidateId))]
     private static ValueTask<object?> ValidateId(
         EndpointFilterInvocationContext context,
         EndpointFilterDelegate next,
