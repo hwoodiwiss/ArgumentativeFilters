@@ -2,7 +2,7 @@
 namespace ExampleMinimalApi;
 
 [JsonSerializable(typeof(CountryDto))]
-public partial class ApplicationJsonContext : JsonSerializerContext
+internal sealed partial class ApplicationJsonContext : JsonSerializerContext
 {
-    
+
 }

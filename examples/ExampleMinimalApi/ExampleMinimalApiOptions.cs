@@ -1,6 +1,6 @@
 ﻿namespace ExampleMinimalApi;
 
-public sealed class ExampleMinimalApiOptions
+internal sealed class ExampleMinimalApiOptions
 {
     public int MinimumAllowedId { get; set; }
 }
