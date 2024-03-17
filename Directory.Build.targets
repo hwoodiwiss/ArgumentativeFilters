@@ -12,6 +12,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
     <IsPackable>false</IsPackable>
+    <NoWarn>CA1515;$(NoWarn);</NoWarn>
   </PropertyGroup>
 
   <!-- Adapted from https://github.com/ViktorHofer/PackAsAnalyzer/blob/main/src/Sdk/Sdk.targets as including as a reference wouldn't work-->  
