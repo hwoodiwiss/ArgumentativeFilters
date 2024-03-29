@@ -5,6 +5,8 @@
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <IsRoslynComponent>true</IsRoslynComponent>
     <NoWarn>NU5128</NoWarn>
+    <AnalyzerLanguage>cs</AnalyzerLanguage>
+    <AnalyzerRoslynVersion>4.0</AnalyzerRoslynVersion>
   </PropertyGroup>
   
   <ItemGroup>
