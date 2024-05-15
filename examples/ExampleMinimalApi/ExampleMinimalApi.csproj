@@ -22,12 +22,6 @@
   <ItemGroup>
     <Compile Remove="**\ValidateIdFilter.*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
-    <Compile Include=".\Filters\ValidateIdFilter.net7.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
-    <Compile Include=".\Filters\ValidateIdFilter.net8.cs" />
-  </ItemGroup>  
   
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
     <IsAotCompatible>true</IsAotCompatible>
