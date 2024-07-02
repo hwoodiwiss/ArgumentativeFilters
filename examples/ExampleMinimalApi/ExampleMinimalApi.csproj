@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <AnalysisMode>Recommended</AnalysisMode>
-    <TargetFrameworks>$(DefaultGeneratorConsumerFrameworks)</TargetFrameworks>
-    <ImplicitUsings>disable</ImplicitUsings>
     <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TargetFrameworks>$(DefaultGeneratorConsumerFrameworks)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
