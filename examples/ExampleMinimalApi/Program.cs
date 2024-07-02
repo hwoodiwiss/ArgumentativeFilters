@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 #pragma warning disable CA1852
+#pragma warning disable CS1591 // Would require XML Docs on Program
 
 #if NET8_0_OR_GREATER
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -51,7 +52,7 @@ app.MapGet("/country/{country}/{id}", (string country, int id) => new CountryDto
 
 app.Run();
 
-// Required for integration tests
+
 public partial class Program
 {
 }
