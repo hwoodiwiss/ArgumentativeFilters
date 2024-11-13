@@ -18,7 +18,7 @@ namespace ArgumentativeFilters
         /// <param name="argumentName">The argument name to search for in the <see cref="global::Microsoft.AspNetCore.Http.EndpointFilterFactoryContext" />'s <c>MethodInfo</c> property.</param>
         /// <param name="comparisonMode">The string comparison mode to use when searching for argument indices.</param>
         /// <returns>
-        /// The endpoint delegate parameter index for the given argument name as a <see cref="int?" />.
+        /// The endpoint delegate parameter index for the given argument name as a <see cref="System.Nullable{T}" /> of type <see cref="int" />.
         /// Returns <see langword="null"/> if the argument name is not found.
         /// </returns>
         public static int? GetArgumentIndex(global::Microsoft.AspNetCore.Http.EndpointFilterFactoryContext context, string argumentName, StringComparison comparisonMode)

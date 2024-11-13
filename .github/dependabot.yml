@@ -12,6 +12,10 @@ updates:
       interval: daily
       timezone: "Europe/London"
     open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: Microsoft.CodeAnalysis.CSharp
+        update-types:
+          ["version-update:semver-minor", "version-update:semver-major"]
     groups:
       xunit:
         patterns:

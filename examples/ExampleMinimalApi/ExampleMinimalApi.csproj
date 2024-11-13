@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <AnalysisMode>Recommended</AnalysisMode>
-    <TargetFrameworks>$(DefaultGeneratorConsumerFrameworks)</TargetFrameworks>
-    <ImplicitUsings>disable</ImplicitUsings>
     <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TargetFrameworks>$(DefaultGeneratorConsumerFrameworks)</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
@@ -22,12 +23,6 @@
   <ItemGroup>
     <Compile Remove="**\ValidateIdFilter.*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
-    <Compile Include=".\Filters\ValidateIdFilter.net7.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
-    <Compile Include=".\Filters\ValidateIdFilter.net8.cs" />
-  </ItemGroup>  
   
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
     <IsAotCompatible>true</IsAotCompatible>
