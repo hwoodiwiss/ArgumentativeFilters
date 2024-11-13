@@ -5,6 +5,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ImplicitUsings>disable</ImplicitUsings>
     <TargetFrameworks>$(DefaultGeneratorConsumerFrameworks)</TargetFrameworks>
+    <NoWarn>$(NoWarn);CA1515;</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
