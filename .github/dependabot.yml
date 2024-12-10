@@ -20,3 +20,12 @@ updates:
       xunit:
         patterns:
           - "xunit*"
+  - package-ecosystem: dotnet-sdk
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types: 
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
