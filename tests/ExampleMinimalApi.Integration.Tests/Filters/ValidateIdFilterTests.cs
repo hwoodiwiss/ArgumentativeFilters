@@ -12,20 +12,19 @@ public class ValidateIdFilterTests : IClassFixture<ExampleMinimalApiFixture>
     {
         _client = fixture.CreateClient();
     }
-    
+
     [Fact]
     public async Task ValidateIdFilter_WhenIdIsValid_WillLetEndpointReturnOkWithIdInResponse()
     {
         // Arrange
         const int validId = 500000;
-        
+
         // Act
-        var response = await _client.GetAsync(new Uri($"country/spain/{validId}", UriKind.Relative));
+        var response = await _client.GetAsync(new Uri($"country/spain/{validId}", UriKind.Relative), TestContext.Current.CancellationToken);
 
         // Assert
-        var resptext = await response.Content.ReadAsStringAsync();
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var exampleResponse = await response.Content.ReadFromJsonAsync<ExampleResponse>();
+        var exampleResponse = await response.Content.ReadFromJsonAsync<ExampleResponse>(TestContext.Current.CancellationToken);
         exampleResponse.ShouldNotBeNull();
         exampleResponse.Id.ShouldBe(validId);
     }
@@ -40,7 +39,7 @@ public class ValidateIdFilterTests : IClassFixture<ExampleMinimalApiFixture>
     public async Task ValidateIdFilter_WhenIdIsInvalid_WillReturnBadRequest(int invalidId)
     {
         // Act
-        var response = await _client.GetAsync(new Uri($"country/wales/{invalidId}", UriKind.Relative));
+        var response = await _client.GetAsync(new Uri($"country/wales/{invalidId}", UriKind.Relative), TestContext.Current.CancellationToken);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);

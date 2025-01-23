@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-      <ImplicitUsings>enable</ImplicitUsings>
-      <IsPackable>false</IsPackable>
-      <IsTestProject>true</IsTestProject>
-      <NoWarn>$(NoWarn);CA1034;CA1062;CA1707;CA2007;CA1515;</NoWarn>
-      <Nullable>enable</Nullable>
-      <TargetFrameworks>$(DefaultGeneratorConsumerFrameworks)</TargetFrameworks>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\examples\ExampleMinimalApi\ExampleMinimalApi.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <NoWarn>$(NoWarn);CA1034;CA1062;CA1707;CA2007;CA1515;</NoWarn>
+    <Nullable>enable</Nullable>
+    <TargetFrameworks>$(DefaultGeneratorConsumerFrameworks)</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\examples\ExampleMinimalApi\ExampleMinimalApi.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+  </ItemGroup>
+  <PropertyGroup>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
 </Project>

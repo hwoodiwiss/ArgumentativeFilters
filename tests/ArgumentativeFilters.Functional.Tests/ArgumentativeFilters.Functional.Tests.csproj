@@ -16,4 +16,8 @@
   <ItemGroup>
     <CompilerVisibleProperty Include="ArgumentativeFilters_WriteDebug" />
   </ItemGroup>
+  <PropertyGroup>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
 </Project>
