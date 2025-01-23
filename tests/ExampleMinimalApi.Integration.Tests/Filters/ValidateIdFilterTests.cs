@@ -12,18 +12,17 @@ public class ValidateIdFilterTests : IClassFixture<ExampleMinimalApiFixture>
     {
         _client = fixture.CreateClient();
     }
-    
+
     [Fact]
     public async Task ValidateIdFilter_WhenIdIsValid_WillLetEndpointReturnOkWithIdInResponse()
     {
         // Arrange
         const int validId = 500000;
-        
+
         // Act
         var response = await _client.GetAsync(new Uri($"country/spain/{validId}", UriKind.Relative), TestContext.Current.CancellationToken);
 
         // Assert
-        var resptext = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var exampleResponse = await response.Content.ReadFromJsonAsync<ExampleResponse>(TestContext.Current.CancellationToken);
         exampleResponse.ShouldNotBeNull();

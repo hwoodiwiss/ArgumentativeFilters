@@ -15,10 +15,10 @@ var builder = WebApplication.CreateSlimBuilder(args);
 var builder = WebApplication.CreateBuilder(args);
 #endif
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+#if NET9_0_OR_GREATER
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
+#endif
 
 builder.Services.AddOptions();
 builder.Services.Configure<ExampleMinimalApiOptions>(builder.Configuration);
@@ -35,16 +35,11 @@ builder.Services.AddScoped<ValidateIdFilter>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+#if NET9_0_OR_GREATER
+app.MapOpenApi();
+#endif
 
 app.UseHttpsRedirection();
-
 
 app.MapGet("/country/{country}/{id}", (string country, int id) => new CountryDto(id, country))
     .AddEndpointFilterFactory(NormalizeRouteCountryFilter.Factory)

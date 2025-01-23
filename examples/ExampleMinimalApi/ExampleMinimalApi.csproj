@@ -9,7 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
-    <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\ArgumentativeFilters\ArgumentativeFilters.csproj" />
@@ -21,10 +20,7 @@
   <ItemGroup>
     <CompilerVisibleProperty Include="ArgumentativeFilters_WriteDebug" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="**\ValidateIdFilter.*.cs" />
-  </ItemGroup>
-  
+
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net8.0'))">
     <IsAotCompatible>true</IsAotCompatible>
     <PublishAot>true</PublishAot>
