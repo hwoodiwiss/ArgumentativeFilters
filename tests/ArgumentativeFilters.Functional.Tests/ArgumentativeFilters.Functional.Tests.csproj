@@ -2,9 +2,10 @@
   <PropertyGroup>
     <TargetFrameworks>$(DefaultGeneratorConsumerFrameworks)</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <IsTestProject>true</IsTestProject>
+    <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);CA1034;CA1062;CA1707;CA2007;CA1515;</NoWarn>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\ArgumentativeFilters\ArgumentativeFilters.csproj" />
