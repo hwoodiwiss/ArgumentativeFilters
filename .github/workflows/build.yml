@@ -57,7 +57,7 @@ jobs:
           }
 
       - name: Publish Workflow Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: packages
           path: ./artifacts/package/release
@@ -75,7 +75,7 @@ jobs:
         run: dotnet publish .\examples\ExampleMinimalApi\ExampleMinimalApi.csproj -r win-x64 -c Release --framework net8.0 /tl
 
       - name: Publish AOT Compiled Example
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ExampleMinimalApi-AOT
           path: ./artifacts/bin/ExampleMinimalApi/release_net8.0_win-x64/native
