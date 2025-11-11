@@ -21,28 +21,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["csharp"]
+        language: [ 'actions', 'csharp']
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: |
-            6.0.x
-            8.0.x
-          global-json-file: ./global.json
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
+          build-mode: none
           languages: ${{ matrix.language }}
-
-      - name: Build
-        shell: pwsh
-        run: ./build.ps1 -SkipTests
+          queries: security-and-quality
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
