@@ -7,7 +7,7 @@
     <PackageVersion Include="coverlet.msbuild" Version="10.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.203"/>
-    <PackageVersion Include="MinVer" Version="6.0.0" />
+    <PackageVersion Include="MinVer" Version="7.0.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
