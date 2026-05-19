@@ -1,5 +1,6 @@
 using ExampleMinimalApi;
 using ExampleMinimalApi.Filters;
+using ExampleMinimalApi.Middleware;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +41,7 @@ app.MapOpenApi();
 #endif
 
 app.UseHttpsRedirection();
+app.Use(MinimumAllowedIdHeaderMiddleware.AddMinimumAllowedIdHeaderMiddleware);
 
 app.MapGet("/country/{country}/{id}", (string country, int id) => new CountryDto(id, country))
     .AddEndpointFilterFactory(NormalizeRouteCountryFilter.Factory)
