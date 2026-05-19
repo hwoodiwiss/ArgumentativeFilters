@@ -16,6 +16,8 @@ If that sounds a bit labour intensive, that's because it is. That's where Argume
 
 With Argumentative Filters, a filter can be created as a static method that takes an `EndpointFilterInvocationContext` and an `EndpointFilterDelegate` as required parameters. Other kinds of parameters are also supported, documentation for these can be found [here](/docs/parameter-modifiers.md).
 
+Argumentative Middleware works similarly for ASP.NET Core middleware. A middleware can be created as a static method that takes an `HttpContext` and a `RequestDelegate`, with additional parameters resolved from DI.
+
 ## Usage
 
 **Filter**
@@ -38,4 +40,24 @@ public static partial class ExampleFilter
 ```csharp
 app.MapGet("/my/route/{parameter}", (string parameter) => parameter)
     .AddEndpointFilterFactory(ExampleFilter.Factory);
+```
+
+**Middleware**
+
+```csharp
+public static partial class ExampleMiddleware
+{
+    [ArgumentativeMiddleware]
+    public static Task AddHeader(HttpContext context, RequestDelegate next, IMyService myService)
+    {
+        context.Response.Headers["X-Value"] = myService.GetValue();
+        return next(context);
+    }
+}
+```
+
+**ASP.NET Core Pipeline Configuration**
+
+```csharp
+app.Use(ExampleMiddleware.Middleware);
 ```
