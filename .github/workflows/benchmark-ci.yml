@@ -1,0 +1,74 @@
+name: benchmark-ci
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.gitattributes"
+      - "**/*.gitignore"
+      - "**/*.md"
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_MULTILEVEL_LOOKUP: 0
+  DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  FORCE_COLOR: 1
+  NUGET_XMLDOC_MODE: skip
+  TERM: xterm
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: ./global.json
+
+      - name: Run benchmarks
+        shell: pwsh
+        run: ./build/benchmark.ps1 -PublishResults
+
+      - name: Upload BenchmarkDotNet artifacts
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: benchmarks
+          path: ./artifacts/benchmarks/**
+
+      - name: Get repository name
+        id: repo
+        shell: pwsh
+        run: |
+          $repoName = "${{ github.repository }}".Split("/")[-1]
+          echo "name=$repoName" >> $env:GITHUB_OUTPUT
+
+      - name: Publish benchmark results
+        uses: martincostello/benchmarkdotnet-results-publisher@v2
+        with:
+          branch: ${{ github.ref_name }}
+          comment-on-threshold: true
+          output-file-path: ${{ steps.repo.outputs.name }}/data.json
+          repo: hwoodiwiss/benchmarks
+          repo-token: ${{ secrets.BENCHMARKS_TOKEN }}
+
+      - name: Add step summary
+        shell: pwsh
+        run: |
+          echo "## Benchmark Results" >> $env:GITHUB_STEP_SUMMARY
+          echo "" >> $env:GITHUB_STEP_SUMMARY
+          echo "Results published to [hwoodiwiss/benchmarks](https://hwoodiwiss.github.io/benchmarks/)." >> $env:GITHUB_STEP_SUMMARY
