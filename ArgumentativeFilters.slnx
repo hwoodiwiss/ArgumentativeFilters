@@ -6,6 +6,7 @@
     <File Path="build.ps1" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+    <File Path="NuGet.config" />
     <File Path="global.json" />
     <File Path="README.md" />
   </Folder>
