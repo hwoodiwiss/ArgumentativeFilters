@@ -3,23 +3,23 @@
 #Requires -PSEdition Core
 
 param (
-    [switch] $PublishResults = $false
+    [switch] $PublishResults,
+    [Parameter(Mandatory = $false)][string] $Framework = "net10.0"
 )
 
 $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path $PSScriptRoot -Parent
-$benchmarkProject = Join-Path $repoRoot "benchmarks" "ArgumentativeFilters.Benchmarks" "ArgumentativeFilters.Benchmarks.csproj"
 $artifactsPath = Join-Path $repoRoot "artifacts" "benchmarks"
 
-Push-Location $repoRoot
-try {
-    dotnet run --project $benchmarkProject --configuration Release -- --filter * --exporters json --artifacts $artifactsPath
 
-    if ($LASTEXITCODE -ne 0) {
-        throw "Benchmarks failed with exit code $LASTEXITCODE"
-    }
+if ($PublishResults) {
+    $additionalArgs += "--exporters", "json"
+    $additionalArgs += "--artifacts", $artifactsPath
 }
-finally {
-    Pop-Location
-}
+
+$benchmarkProject = Join-Path $repoRoot "benchmarks" "ArgumentativeFilters.Benchmarks" "ArgumentativeFilters.Benchmarks.csproj"
+
+dotnet run --project $benchmarkProject --configuration Release --framework $Framework -- $additionalArgs --% --filter *
+
+exit $LASTEXITCODE

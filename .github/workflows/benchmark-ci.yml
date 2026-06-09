@@ -24,7 +24,7 @@ env:
 
 jobs:
   benchmark:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     permissions:
       contents: read
 
@@ -65,6 +65,7 @@ jobs:
           output-file-path: ${{ steps.repo.outputs.name }}/data.json
           repo: hwoodiwiss/benchmarks
           repo-token: ${{ secrets.BENCHMARKS_TOKEN }}
+          results-path: ./artifacts/benchmarks/results
 
       - name: Add step summary
         shell: pwsh
