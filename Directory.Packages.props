@@ -13,7 +13,7 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.300"/>
     <PackageVersion Include="MinVer" Version="7.0.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="xunit.v3" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.30" />
